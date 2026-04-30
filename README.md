@@ -1,2 +1,3 @@
-# typixel
-A keyboard only pixel art editor
+# Typixel
+
+A web-based keyboard only pixel art editor.
