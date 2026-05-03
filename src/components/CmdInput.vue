@@ -4,10 +4,29 @@
       <span class="cmd-input__label">
         Command Input
       </span>
-      <input class="cmd-input__input">
+      <input
+        v-model="command"
+        class="cmd-input__input"
+        tabindex="0"
+        @keydown.enter="submitCommand"
+      >
     </label>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+import { useCommand } from "@/stores/Command";
+
+const { dispatchCommand } = useCommand();
+
+const command = ref<string>("");
+
+function submitCommand() {
+  dispatchCommand(command.value);
+  command.value = "";
+}
+</script>
 
 <style lang="scss" scoped>
 .cmd-input {
@@ -29,7 +48,7 @@
 
   &__input {
     border-radius: t.$border-radius;
-    border: none;
+    border: 2px solid transparent;
     padding: 4px;
     width: 100%;
     outline: none;
@@ -40,6 +59,10 @@
 
     &:hover, &:focus {
       background-color: t.$color-g1-5;
+    }
+
+    &:focus {
+      border-color: t.$color-p-3;
     }
   }
 }

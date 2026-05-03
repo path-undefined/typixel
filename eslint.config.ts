@@ -24,6 +24,7 @@ export default defineConfigWithVueTs(
     rules: {
       "@stylistic/arrow-parens": ["error", "always"],
       "@stylistic/arrow-spacing": ["error", { before: true, after: true }],
+      "@stylistic/brace-style": ["error", "1tbs"],
       "@stylistic/comma-dangle": ["error", "always-multiline"],
       "@stylistic/indent": ["error", 2],
       "@stylistic/max-len": ["error", {
