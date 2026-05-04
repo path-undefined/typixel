@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { defaultKeyBindings } from "@/services/commands/CommandKeyBindings";
 import type {
   CommandContext,
@@ -14,6 +14,7 @@ import { useViewport } from "./Viewport";
 import { buildCommandMethodLookup } from "@/services/commands/CommandLookup";
 
 type CommandState = {
+  lastCommandResult: CommandResult | null
   keyBindings: CommandKeyBinding[]
 };
 
@@ -30,13 +31,39 @@ export const useCommand = defineStore("command", () => {
     viewport,
   };
 
+  const commandMethodLookup = buildCommandMethodLookup(ctx);
+
   const state = ref<CommandState>({
+    lastCommandResult: null,
     keyBindings: defaultKeyBindings,
   });
 
-  const commandMethodLookup = buildCommandMethodLookup(ctx);
+  const lastCommandResult = computed(() => state.value.lastCommandResult);
 
-  function dispatchCommand(command: string): CommandResult {
+  function executeCommand(command: string) {
+    state.value.lastCommandResult = executeCommandInternally(command);
+
+    setTimeout(() => {
+      state.value.lastCommandResult = null;
+    }, 10 * 1000);
+  }
+
+  function executeCommandByKeyBinding(keys: string[]): boolean {
+    const command = state.value.keyBindings
+      .filter((b) => keysAreEqual(keys, b.keys))
+      .find((b) => !b.context || contextsAreMatching(tool.state, b.context))
+      ?.command ?? null;
+
+    if (!command) {
+      return false;
+    }
+
+    executeCommandInternally(command);
+
+    return true;
+  }
+
+  function executeCommandInternally(command: string): CommandResult {
     const [verb, ...params] = command.split(" ");
 
     const commandMethod = commandMethodLookup[
@@ -51,13 +78,6 @@ export const useCommand = defineStore("command", () => {
     }
 
     return commandMethod(params);
-  }
-
-  function getCommand(keys: string[]): string | null {
-    return state.value.keyBindings
-      .filter((b) => keysAreEqual(keys, b.keys))
-      .find((b) => !b.context || contextsAreMatching(tool.state, b.context))
-      ?.command ?? null;
   }
 
   function setKeyBinding(binding: CommandKeyBinding) {
@@ -112,8 +132,10 @@ export const useCommand = defineStore("command", () => {
   }
 
   return {
-    dispatchCommand,
-    getCommand,
+    state,
+    lastCommandResult,
+    executeCommand,
+    executeCommandByKeyBinding,
     setKeyBinding,
     unsetKeyBinding,
   };

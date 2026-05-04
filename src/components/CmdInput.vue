@@ -4,8 +4,22 @@
       <span class="cmd-input__label">
         Command Input
       </span>
+      <div
+        v-if="command.lastCommandResult"
+        class="cmd-input__status"
+        :class="{
+          'cmd-input__status--success': command.lastCommandResult.successful,
+          'cmd-input__status--error': !command.lastCommandResult.successful,
+        }"
+      >
+        <span class="cmd-input__status-text">
+          {{ command.lastCommandResult.successful ? "SUCCESSFUL" : "ERROR" }}
+        </span>
+
+        {{ command.lastCommandResult.message }}
+      </div>
       <input
-        v-model="command"
+        v-model="commandInput"
         class="cmd-input__input"
         tabindex="0"
         @keydown.enter="submitCommand"
@@ -18,13 +32,13 @@
 import { ref } from "vue";
 import { useCommand } from "@/stores/Command";
 
-const { dispatchCommand } = useCommand();
+const command = useCommand();
 
-const command = ref<string>("");
+const commandInput = ref<string>("");
 
 function submitCommand() {
-  dispatchCommand(command.value);
-  command.value = "";
+  command.executeCommand(commandInput.value);
+  commandInput.value = "";
 }
 </script>
 
@@ -43,10 +57,12 @@ function submitCommand() {
   }
 
   &__label {
+    font-size: 110%;
     font-weight: bold;
   }
 
   &__input {
+    margin-top: 4px;
     border-radius: t.$border-radius;
     border: 2px solid transparent;
     padding: 4px;
@@ -64,6 +80,23 @@ function submitCommand() {
     &:focus {
       border-color: t.$color-p-3;
     }
+  }
+
+  &__status {
+    margin-top: 4px;
+    border-radius: t.$border-radius;
+    padding: 4px 8px;
+
+    &--success {
+      background-color: t.$color-success;
+    }
+    &--error {
+      background-color: t.$color-error;
+    }
+  }
+
+  &__status-text {
+    font-weight: bold;
   }
 }
 </style>

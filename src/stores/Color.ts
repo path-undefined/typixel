@@ -1,3 +1,4 @@
+import { defaultPalettes } from "@/services/Colors/Palettes";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
@@ -9,7 +10,7 @@ type ColorState = {
 export const useColor = defineStore("color", () => {
   const state = ref<ColorState>({
     color: [0, 0],
-    palettes: [["#000000", "#ffffff"]],
+    palettes: defaultPalettes,
   });
 
   const color = computed(() =>
@@ -18,7 +19,7 @@ export const useColor = defineStore("color", () => {
 
   function init() {
     state.value.color = [0, 0];
-    state.value.palettes = [["#000000", "#ffffff"]];
+    state.value.palettes = defaultPalettes;
   }
 
   function setColor(colorValue: string) {

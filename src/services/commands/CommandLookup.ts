@@ -3,6 +3,7 @@ import { buildCreateCommand } from "./Create";
 import { buildDrawPixelCommand } from "./DrawPixel";
 import { buildErasePixelCommand } from "./ErasePixel";
 import { buildMoveCursorCommand } from "./MoveCursor";
+import { buildSelectColorCommand } from "./SelectColor";
 import { buildZoomCommand } from "./Zoom";
 
 export function buildCommandMethodLookup(
@@ -13,6 +14,7 @@ export function buildCommandMethodLookup(
     "draw-pixel": buildDrawPixelCommand(ctx),
     "erase-pixel": buildErasePixelCommand(ctx),
     "move-cursor": buildMoveCursorCommand(ctx),
+    "select-color": buildSelectColorCommand(ctx),
     "zoom": buildZoomCommand(ctx),
   };
 }

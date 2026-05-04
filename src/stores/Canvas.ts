@@ -100,7 +100,10 @@ export const useCanvas = defineStore("canvas", () => {
   }
 
   function setPixel(x: number, y: number, color: string) {
-    if (!layer.value || !layer.value.buffer[x] || !layer.value.buffer[x][y]) {
+    if (
+      !layer.value
+      || layer.value.buffer[x] === undefined
+      || layer.value.buffer[x][y] === undefined) {
       return;
     }
 

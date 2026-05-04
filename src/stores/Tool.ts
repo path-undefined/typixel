@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
 export type Tool = "PIXEL" | "FILL" | "CIRCLE" | "RECT" | "LINE";
-export type ToolStatus = "IDLE" | "STARTED";
+export type ToolStatus = "READY" | "STARTED";
 export type InfoStatus = "EDIT" | "TOOL" | "PALETTE" | "COLOR" | "LAYER";
 
 type ToolState = {
@@ -16,7 +16,7 @@ export const useTool = defineStore("tool", () => {
   const state = ref<ToolState>({
     cursor: [0, 0],
     tool: "PIXEL",
-    toolStatus: "IDLE",
+    toolStatus: "READY",
     infoStatus: "EDIT",
   });
 
@@ -28,7 +28,7 @@ export const useTool = defineStore("tool", () => {
   function init() {
     state.value.cursor = [0, 0];
     state.value.tool = "PIXEL";
-    state.value.toolStatus = "IDLE";
+    state.value.toolStatus = "READY";
     state.value.infoStatus = "EDIT";
   }
 

@@ -212,12 +212,10 @@ function onKeyDown(ev: KeyboardEvent) {
   }
 
   const keys = [...modifiers, ev.key];
-  const boundCommand = command.getCommand(keys);
+  const commandExecuted = command.executeCommandByKeyBinding(keys);
 
-  if (boundCommand) {
+  if (commandExecuted) {
     ev.preventDefault();
-
-    command.dispatchCommand(boundCommand);
   }
 }
 </script>
