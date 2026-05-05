@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
 type CanvasState = {
-  layers: Layer[]
-  layer: number
+  allLayers: Layer[]
+  currentLayerIndex: number
   size: [number, number]
   colorList: string[]
 };
@@ -16,14 +16,15 @@ type Layer = {
 
 export const useCanvas = defineStore("canvas", () => {
   const state = ref<CanvasState>({
-    layers: [],
-    layer: -1,
+    allLayers: [],
+    currentLayerIndex: -1,
     size: [0, 0],
     colorList: [],
   });
 
-  const layers = computed(() => state.value.layers);
-  const layer = computed(() => state.value.layers[state.value.layer] ?? null);
+  const allLayers = computed(() => state.value.allLayers);
+  const currentLayer = computed(() =>
+    state.value.allLayers[state.value.currentLayerIndex] ?? null);
   const size = computed(() => state.value.size);
   const colorList = computed(() => state.value.colorList);
 
@@ -48,27 +49,24 @@ export const useCanvas = defineStore("canvas", () => {
       buffer.push(col);
     }
 
-    state.value.layers = [{
-      name: "Utitled Layer",
+    state.value.allLayers = [{
+      name: "Untitled Layer",
       visible: true,
       buffer,
     }];
-    state.value.layer = 0;
+    state.value.currentLayerIndex = 0;
     state.value.size = [w, h];
     state.value.colorList = [];
   }
 
-  function setLayer(layer: Layer) {
-    state.value.layers[state.value.layer] = layer;
-  }
-
-  function selectLayer(layer: number) {
-    state.value.layer = layer;
+  function selectLayer(layerIndex: number) {
+    state.value.currentLayerIndex = layerIndex;
   }
 
   function moveLayerTo(to: number) {
-    const layer = state.value.layers.splice(state.value.layer, 1)[0]!;
-    state.value.layers.splice(to, 0, layer);
+    const layer = state.value.allLayers
+      .splice(state.value.currentLayerIndex, 1)[0]!;
+    state.value.allLayers.splice(to, 0, layer);
   }
 
   function insertLayer() {
@@ -88,22 +86,22 @@ export const useCanvas = defineStore("canvas", () => {
       buffer,
     };
 
-    state.value.layers.splice(state.value.layer, 0, layer);
+    state.value.allLayers.splice(state.value.currentLayerIndex, 0, layer);
   }
 
   function removeLayer() {
-    state.value.layers.splice(state.value.layer, 1);
+    state.value.allLayers.splice(state.value.currentLayerIndex, 1);
 
-    if (state.value.layer >= state.value.layers.length) {
-      state.value.layer = state.value.layers.length - 1;
+    if (state.value.currentLayerIndex >= state.value.allLayers.length) {
+      state.value.currentLayerIndex = state.value.allLayers.length - 1;
     }
   }
 
   function setPixel(x: number, y: number, color: string) {
     if (
-      !layer.value
-      || layer.value.buffer[x] === undefined
-      || layer.value.buffer[x][y] === undefined) {
+      !currentLayer.value
+      || currentLayer.value.buffer[x] === undefined
+      || currentLayer.value.buffer[x][y] === undefined) {
       return;
     }
 
@@ -113,29 +111,28 @@ export const useCanvas = defineStore("canvas", () => {
       colorIndex = colorLookup.value[color]!;
     }
 
-    layer.value.buffer[x][y] = colorIndex;
+    currentLayer.value.buffer[x][y] = colorIndex;
   }
 
   function unsetPixel(x: number, y: number) {
     if (
-      !layer.value
-      || layer.value.buffer[x] === undefined
-      || layer.value.buffer[x][y] === undefined
+      !currentLayer.value
+      || currentLayer.value.buffer[x] === undefined
+      || currentLayer.value.buffer[x][y] === undefined
     ) {
       return;
     }
 
-    layer.value.buffer[x][y] = -1;
+    currentLayer.value.buffer[x][y] = -1;
   }
 
   return {
     state,
-    layers,
-    layer,
+    allLayers,
+    currentLayer,
     size,
     colorList,
     init,
-    setLayer,
     selectLayer,
     moveLayerTo,
     insertLayer,

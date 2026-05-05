@@ -1,25 +1,21 @@
 import type { CommandContext, CommandDefinition, CommandResult } from "../Command.type";
 
-export function buildCreateCommand(
+export function buildSelectPaletteCommand(
   ctx: CommandContext,
 ): CommandDefinition {
   return {
-    command: "create",
+    command: "select-palette",
     method: (params: string[]): CommandResult => {
-      const width = Number(params[0]);
-      const height = Number(params[1]);
+      const paletteIndex = Number(params[0]);
 
-      if (!width || !height) {
+      if (paletteIndex < 0 || paletteIndex > ctx.color.allPalettes.length - 1) {
         return {
           successful: false,
-          message: "Invalid parameters",
+          message: "Palette index out of range",
         };
       }
 
-      ctx.canvas.init(width, height);
-      ctx.color.init();
-      ctx.tool.init();
-      ctx.viewport.init();
+      ctx.color.selectCurrentPalette(paletteIndex);
 
       return {
         successful: true,

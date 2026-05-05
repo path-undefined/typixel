@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import PixelCanvas from "@/components/PixelCanvas.vue";
-import StatusDisplay from "@/components/StatusDisplay.vue";
+import StatusDisplay from "@/components/status/StatusDisplay.vue";
 import CmdInput from "@/components/CmdInput.vue";
 </script>
 

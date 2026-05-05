@@ -1,0 +1,34 @@
+import { buildChangeInfoStatusCommand } from "./commands/ChangeInfoStatus";
+import type { CommandContext, CommandMethod } from "./Command.type";
+import { buildCreateCommand } from "./commands/Create";
+import { buildDrawPixelCommand } from "./commands/DrawPixel";
+import { buildErasePixelCommand } from "./commands/ErasePixel";
+import { buildMoveCursorCommand } from "./commands/MoveCursor";
+import { buildSelectColorCommand } from "./commands/SelectColor";
+import { buildSelectPaletteCommand } from "./commands/SelectPalette";
+import { buildSelectPaletteAndColorCommand } from "./commands/SelectPaletteAndColor";
+import { buildZoomCommand } from "./commands/Zoom";
+
+export function buildCommandMethodLookup(
+  ctx: CommandContext,
+): Record<string, CommandMethod> {
+  const lookup: Record<string, CommandMethod> = {};
+
+  const commandDefinitions = [
+    buildChangeInfoStatusCommand(ctx),
+    buildCreateCommand(ctx),
+    buildDrawPixelCommand(ctx),
+    buildErasePixelCommand(ctx),
+    buildMoveCursorCommand(ctx),
+    buildSelectPaletteAndColorCommand(ctx),
+    buildSelectPaletteCommand(ctx),
+    buildSelectColorCommand(ctx),
+    buildZoomCommand(ctx),
+  ];
+
+  commandDefinitions.forEach((d) => {
+    lookup[d.command] = d.method;
+  });
+
+  return lookup;
+}

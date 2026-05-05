@@ -61,11 +61,11 @@ function render() {
 
   renderBackground();
 
-  if (canvas.layers.length === 0) {
+  if (canvas.allLayers.length === 0) {
     return;
   }
 
-  for (const layer of canvas.layers) {
+  for (const layer of canvas.allLayers) {
     for (let x = 0; x < canvas.size[0]; x++) {
       for (let y = 0; y < canvas.size[1]; y++) {
         const pixelColorIndex = layer.buffer[x]![y]!;
@@ -168,7 +168,7 @@ function renderCursor() {
     x + 0.5, y + 0.5, viewport.zoom, viewport.zoom,
   );
 
-  ctx2d.value.fillStyle = color.color;
+  ctx2d.value.fillStyle = color.currentColor;
   ctx2d.value.fillRect(
     x + Math.floor(viewport.zoom / 10) + 2,
     y + Math.floor(viewport.zoom / 10) + 2,

@@ -1,17 +1,17 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { defaultKeyBindings } from "@/services/commands/CommandKeyBindings";
+import { defaultKeyBindings } from "@/services/CommandKeyBindings";
 import type {
   CommandContext,
   CommandKeyBinding,
   CommandKeyBindingContext,
   CommandResult,
-} from "@/services/commands/Command.type";
+} from "@/services/Command.type";
 import { useTool } from "./Tool";
 import { useCanvas } from "./Canvas";
 import { useColor } from "./Color";
 import { useViewport } from "./Viewport";
-import { buildCommandMethodLookup } from "@/services/commands/CommandLookup";
+import { buildCommandMethodLookup } from "@/services/CommandLookup";
 
 type CommandState = {
   lastCommandResult: CommandResult | null

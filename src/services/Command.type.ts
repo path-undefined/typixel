@@ -15,6 +15,11 @@ export type CommandResult = {
   message?: string
 };
 
+export type CommandDefinition = {
+  command: string
+  method: CommandMethod
+};
+
 export type CommandMethod = (params: string[]) => CommandResult;
 
 export type CommandKeyBinding = {
