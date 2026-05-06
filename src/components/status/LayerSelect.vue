@@ -12,7 +12,7 @@
 <style lang="scss" scoped>
 .layer-select {
   &__title {
-    font-size: 110%;
+    font-size: 120%;
     font-weight: bold;
   }
 }

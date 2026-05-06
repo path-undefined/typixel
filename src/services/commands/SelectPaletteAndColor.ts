@@ -23,8 +23,8 @@ export function buildSelectPaletteAndColorCommand(
         };
       }
 
-      ctx.color.selectCurrentPalette(paletteIndex);
-      ctx.color.selectCurrentColor(colorIndex);
+      ctx.color.selectPalette(paletteIndex);
+      ctx.color.selectColor(colorIndex);
 
       return {
         successful: true,

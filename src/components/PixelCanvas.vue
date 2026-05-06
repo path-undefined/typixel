@@ -162,13 +162,25 @@ function renderFrame() {
 function renderCursor() {
   const [x, y] = bufferToCanvas([tool.cursor[0], tool.cursor[1]]);
 
-  ctx2d.value.strokeStyle = "#e5e5e5";
+  const pixelColorIndex
+    = canvas.currentLayer!.buffer[tool.cursor[0]]![tool.cursor[1]]!;
+  const pixelColor = canvas.colorList[pixelColorIndex] ?? "#000000";
+
+  const hexCode = pixelColor.replace("#", "");
+
+  const r = parseInt(hexCode.substring(0, 2), 16);
+  const g = parseInt(hexCode.substring(2, 4), 16);
+  const b = parseInt(hexCode.substring(4, 6), 16);
+
+  const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+
+  ctx2d.value.strokeStyle = (yiq >= 128) ? "#000000" : "#ffffff";
   ctx2d.value.lineWidth = 1;
   ctx2d.value.strokeRect(
     x + 0.5, y + 0.5, viewport.zoom, viewport.zoom,
   );
 
-  ctx2d.value.fillStyle = color.currentColor;
+  ctx2d.value.fillStyle = color.currentColorInUse;
   ctx2d.value.fillRect(
     x + Math.floor(viewport.zoom / 10) + 2,
     y + Math.floor(viewport.zoom / 10) + 2,
@@ -222,9 +234,10 @@ function onKeyDown(ev: KeyboardEvent) {
 
 <style lang="scss" scoped>
 .pixel-canvas {
+  border-radius: t.$border-radius;
   width: 100%;
   height: 100%;
-  background-color: t.$color-g1-2;
+  background-color: t.$color-g1-6;
 
   &__canvas {
     border-radius: t.$border-radius;

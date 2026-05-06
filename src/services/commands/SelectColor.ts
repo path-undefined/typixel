@@ -15,7 +15,7 @@ export function buildSelectColorCommand(
         };
       }
 
-      ctx.color.selectCurrentColor(colorIndex);
+      ctx.color.selectColor(colorIndex);
 
       return {
         successful: true,

@@ -19,8 +19,15 @@
       </li>
       <li>
         Color:
-        <ColorCube :color="color.currentColor" />
-        {{ color.currentColor }}
+        <ColorCube :color="color.currentColorInUse" />
+        {{ color.currentColorInUse }}
+      </li>
+      <li>
+        Palette:
+        <ColorCubeList
+          :colors="color.selectedPalette"
+          :current-color="color.currentColorInUse"
+        />
       </li>
       <li>
         Cursor:
@@ -41,6 +48,7 @@ import { useCanvas } from "@/stores/Canvas";
 import { useColor } from "@/stores/Color";
 import { useTool } from "@/stores/Tool";
 import ColorCube from "./ColorCube.vue";
+import ColorCubeList from "./ColorCubeList.vue";
 
 const canvas = useCanvas();
 const color = useColor();
@@ -61,7 +69,7 @@ const pixel = computed(() => {
 <style lang="scss" scoped>
 .editor-status {
   &__title {
-    font-size: 110%;
+    font-size: 120%;
     font-weight: bold;
   }
 

@@ -15,7 +15,7 @@ export function buildSelectPaletteCommand(
         };
       }
 
-      ctx.color.selectCurrentPalette(paletteIndex);
+      ctx.color.selectPalette(paletteIndex);
 
       return {
         successful: true,

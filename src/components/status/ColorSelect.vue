@@ -6,11 +6,11 @@
 
     <ul class="color-select__list">
       <li
-        v-for="(c, index) of color.currentPalette"
+        v-for="(c, index) of color.selectedPalette"
         :key="c"
         class="color-select__item"
         :class="{
-          'color-select__item--active': c === color.currentColor,
+          'color-select__item--active': c === color.currentColorInUse,
         }"
       >
         {{ (index + 1) % 10 }}.
@@ -31,7 +31,7 @@ const color = useColor();
 <style lang="scss" scoped>
 .color-select {
   &__title {
-    font-size: 110%;
+    font-size: 120%;
     font-weight: bold;
   }
 

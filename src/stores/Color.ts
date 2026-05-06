@@ -1,48 +1,57 @@
-import { defaultPalettes } from "@/services/ColorPalettes";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
 type ColorState = {
   allPalettes: string[][]
-  currentPaletteIndex: number
+  selectedPaletteIndex: number
+  selectedColorIndex: number
   currentColor: string
 };
 
 export const useColor = defineStore("color", () => {
   const state = ref<ColorState>({
     currentColor: "",
-    currentPaletteIndex: 0,
-    allPalettes: defaultPalettes,
+    selectedColorIndex: 0,
+    selectedPaletteIndex: 0,
+    allPalettes: [],
   });
 
   const allPalettes = computed(() => state.value.allPalettes);
-  const currentPalette = computed(() =>
-    state.value.allPalettes[state.value.currentPaletteIndex]!);
-  const currentColor = computed(() => state.value.currentColor);
+  const selectedPalette = computed(() =>
+    state.value.allPalettes[state.value.selectedPaletteIndex]!);
+  const selectedColor = computed(() =>
+    state.value.allPalettes[
+      state.value.selectedPaletteIndex
+    ]![
+      state.value.selectedColorIndex
+    ]!,
+  );
+  const currentColorInUse = computed(() => state.value.currentColor);
 
   function init() {
-    state.value.allPalettes = defaultPalettes;
-    state.value.currentPaletteIndex = 0;
+    state.value.allPalettes = [["#000000", "#ffffff"]];
+    state.value.selectedPaletteIndex = 0;
+    state.value.selectedColorIndex = 0;
     state.value.currentColor
-      = state.value.allPalettes[state.value.currentPaletteIndex]![0]!;
+      = state.value.allPalettes[0]![0]!;
   }
 
-  function setCurrentColor(color: string) {
+  function setCurrentColorInUse(color: string) {
     state.value.currentColor = color;
   }
 
-  function selectCurrentColor(colorIndex: number) {
-    state.value.currentColor
-      = currentPalette.value[colorIndex] ?? state.value.currentColor;
+  function selectColor(colorIndex: number) {
+    state.value.selectedColorIndex = colorIndex;
+    state.value.currentColor = selectedPalette.value[colorIndex]!;
   }
 
-  function selectCurrentPalette(paletteIndex: number) {
-    state.value.currentPaletteIndex = paletteIndex;
+  function selectPalette(paletteIndex: number) {
+    state.value.selectedPaletteIndex = paletteIndex;
   }
 
   function movePaletteTo(to: number) {
     const paletteRow = state.value.allPalettes
-      .splice(state.value.currentPaletteIndex, 1)[0]!;
+      .splice(state.value.selectedPaletteIndex, 1)[0]!;
     state.value.allPalettes.splice(to, 0, paletteRow);
   }
 
@@ -53,23 +62,24 @@ export const useColor = defineStore("color", () => {
     }
 
     state.value.allPalettes
-      .splice(state.value.currentPaletteIndex, 0, paletteRow);
+      .splice(state.value.selectedPaletteIndex, 0, paletteRow);
   }
 
   function removePalette() {
     state.value.allPalettes
-      .splice(state.value.currentPaletteIndex, 1);
+      .splice(state.value.selectedPaletteIndex, 1);
   }
 
   return {
     state,
     allPalettes,
-    currentPalette,
-    currentColor,
+    selectedPalette,
+    selectedColor,
+    currentColorInUse,
     init,
-    setCurrentColor,
-    selectCurrentColor,
-    selectCurrentPalette,
+    setCurrentColorInUse,
+    selectColor,
+    selectPalette,
     movePaletteTo,
     insertPalette,
     removePalette,

@@ -57,7 +57,7 @@ function submitCommand() {
   }
 
   &__label {
-    font-size: 110%;
+    font-size: 120%;
     font-weight: bold;
   }
 
