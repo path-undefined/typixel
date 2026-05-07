@@ -114,12 +114,21 @@ export const useCanvas = defineStore("canvas", () => {
     state.value.dirty = true;
   }
 
-  function getPixel(pos: [number, number]): string | null {
-    const layer = [...state.value.allLayers].reverse()
-      .find((l) =>
-        l.visible
-        && l.buffer[pos[1] * size.value[0] + pos[0]] !== 0)
-      ?? null;
+  function getPixel(
+    pos: [number, number],
+    allLayers: boolean = true,
+  ): string | null {
+    let layer: Layer | null;
+
+    if (allLayers) {
+      layer = [...state.value.allLayers].reverse()
+        .find((l) =>
+          l.visible
+          && l.buffer[pos[1] * size.value[0] + pos[0]] !== 0)
+        ?? null;
+    } else {
+      layer = currentLayer.value;
+    }
 
     const u32 = layer?.buffer[pos[1] * size.value[0] + pos[0]] ?? 0;
 

@@ -49,11 +49,10 @@ A web-based keyboard only pixel art editor.
     - ~~activate previous layer~~
     - ~~activate index of layer~~
     - ~~toggle visibility of active layer~~
-    - move active layer up
-    - move active layer down
-    - move active layer to top
-    - move active layer to bottom
+    - ~~move active layer up~~
+    - ~~move active layer down~~
     - merge down active layer
+    - remove layer
   + file related:
     - undo
     - redo

@@ -27,6 +27,16 @@ export const defaultKeyBindingsForLayerSelectMode: CommandKeyBinding[] = [
     command: "select-layer -1 delta",
   },
   {
+    keys: ["Alt", "ArrowUp"],
+    context: { infoStatus: "LAYER" },
+    command: "move-layer 1 delta",
+  },
+  {
+    keys: ["Alt", "ArrowDown"],
+    context: { infoStatus: "LAYER" },
+    command: "move-layer -1 delta",
+  },
+  {
     keys: ["1"],
     context: { infoStatus: "LAYER" },
     command: "select-layer 0",

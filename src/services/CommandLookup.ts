@@ -19,6 +19,7 @@ import { buildRenameLayerCommand } from "./commands/RenameLayer";
 import { buildNewLayerCommand } from "./commands/NewLayer";
 import { buildSelectLayerCommand } from "./commands/SelectLayer";
 import { buildToggleLayerVisibilityCommand } from "./commands/ToggleLayerVisibility";
+import { buildMoveLayerCommand } from "./commands/MoveLayer";
 
 export function buildCommandMethodLookup(
   ctx: CommandContext,
@@ -36,6 +37,7 @@ export function buildCommandMethodLookup(
     buildNewLayerCommand(ctx),
     buildRenameLayerCommand(ctx),
     buildToggleLayerVisibilityCommand(ctx),
+    buildMoveLayerCommand(ctx),
     buildSelectLayerCommand(ctx),
     buildSaveCommand(ctx),
     buildLoadCommand(ctx),

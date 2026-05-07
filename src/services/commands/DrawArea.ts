@@ -29,7 +29,7 @@ export function buildDrawAreaCommand(
           continue;
         }
 
-        const colorAtPixel = ctx.canvas.getPixel([x, y]);
+        const colorAtPixel = ctx.canvas.getPixel([x, y], false);
 
         if (colorAtPixel === colorAtCursor) {
           area.push([x, y]);
