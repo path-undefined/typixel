@@ -63,6 +63,7 @@ watch(() => [
   canvas.allLayers,
   canvas.dirty,
   tool.cursor,
+  tool.showGrid,
   viewport.pan,
   viewport.zoom,
 ], render);
@@ -145,6 +146,10 @@ function renderPixels() {
 }
 
 function renderGrid() {
+  if (!tool.showGrid) {
+    return;
+  }
+
   if (viewport.zoom < 8) {
     return;
   }

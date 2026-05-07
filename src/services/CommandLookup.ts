@@ -13,6 +13,9 @@ import { buildDrawAreaCommand } from "./commands/DrawArea";
 import { buildEraseAreaCommand } from "./commands/EraseArea";
 import { buildSaveCommand } from "./commands/Save";
 import { buildLoadCommand } from "./commands/Load";
+import { buildToggleGridCommand } from "./commands/ToggleGrid";
+import { buildPanCommand } from "./commands/Pan";
+import { buildResetViewportCommand } from "./commands/ResetViewport";
 
 export function buildCommandMethodLookup(
   ctx: CommandContext,
@@ -33,7 +36,10 @@ export function buildCommandMethodLookup(
     buildSelectPaletteCommand(ctx),
     buildSelectColorCommand(ctx),
     buildSelectToolCommand(ctx),
+    buildToggleGridCommand(ctx),
+    buildPanCommand(ctx),
     buildZoomCommand(ctx),
+    buildResetViewportCommand(ctx),
   ];
 
   commandDefinitions.forEach((d) => {

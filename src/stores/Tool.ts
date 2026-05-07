@@ -10,6 +10,7 @@ export type ToolState = {
   tool: Tool
   toolStatus: ToolStatus
   infoStatus: InfoStatus
+  showGrid: boolean
 };
 
 export const useTool = defineStore("tool", () => {
@@ -18,12 +19,14 @@ export const useTool = defineStore("tool", () => {
     tool: "PIXEL",
     toolStatus: "READY",
     infoStatus: "EDIT",
+    showGrid: true,
   });
 
   const cursor = computed(() => state.value.cursor);
   const tool = computed(() => state.value.tool);
   const toolStatus = computed(() => state.value.toolStatus);
   const infoStatus = computed(() => state.value.infoStatus);
+  const showGrid = computed(() => state.value.showGrid);
 
   function init() {
     state.value.cursor = [0, 0];
@@ -48,16 +51,22 @@ export const useTool = defineStore("tool", () => {
     state.value.infoStatus = infoStatus;
   }
 
+  function setShowGrid(showGrid: boolean) {
+    state.value.showGrid = showGrid;
+  }
+
   return {
     state,
     cursor,
     tool,
     toolStatus,
     infoStatus,
+    showGrid,
     init,
     setCursor,
     setTool,
     setToolStatus,
     setInfoStatus,
+    setShowGrid,
   };
 });

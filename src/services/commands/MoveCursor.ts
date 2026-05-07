@@ -6,37 +6,30 @@ export function buildMoveCursorCommand(
   return {
     command: "move-cursor",
     method: (params: string[]): CommandResult => {
-      const direction = params[0];
+      const deltaX = Number(params[0]);
+      const deltaY = Number(params[1]);
 
-      const current = ctx.tool.cursor;
+      const [currX, currY] = ctx.tool.cursor;
 
-      switch (direction) {
-        case "up":
-          ctx.tool.setCursor(
-            [current[0], Math.max(0, current[1] - 1)],
-          );
-          break;
-        case "down":
-          ctx.tool.setCursor(
-            [current[0], Math.min(ctx.canvas.size[1] - 1, current[1] + 1)],
-          );
-          break;
-        case "left":
-          ctx.tool.setCursor(
-            [Math.max(0, current[0] - 1), current[1]],
-          );
-          break;
-        case "right":
-          ctx.tool.setCursor(
-            [Math.min(ctx.canvas.size[0] - 1, current[0] + 1), current[1]],
-          );
-          break;
-        default:
-          return {
-            successful: false,
-            message: "Unknown moving direction",
-          };
+      let x = currX + deltaX;
+      let y = currY + deltaY;
+
+      const [w, h] = ctx.canvas.size;
+
+      if (x < 0) {
+        x = 0;
       }
+      if (x >= w) {
+        x = w - 1;
+      }
+      if (y < 0) {
+        y = 0;
+      }
+      if (y >= h) {
+        y = h - 1;
+      }
+
+      ctx.tool.setCursor([x, y]);
 
       return {
         successful: true,

@@ -5,24 +5,23 @@ A web-based keyboard only pixel art editor.
 ## Scope of the MVP
 
 * Implement commands:
-  + display related:
-    - move cursor for 1 step (4 directions)
-    - toggle the grid in canvas display
-    - pan canvas display
-    - zoom-in canvas display
-    - zoom-out canvas display
+  + ~~display related:~~
+    - ~~move cursor for 1 step (4 directions)~~
+    - ~~toggle the grid in canvas display~~
+    - ~~pan canvas display~~
+    - ~~zoom canvas display~~
   + tool selecting related:
-    - enter tool selecting mode
-    - exit tool selecting mode
+    - ~~enter tool selecting mode~~
+    - ~~exit tool selecting mode~~
     - activate next tool
     - activate previous tool
     - activate first tool
     - activate last tool
-    - activate index of tool
-  + pixel related:
-    - activate pixel editing tool
-    - draw a pixel at cursor
-    - erase a pixel at cursor
+    - ~~activate index of tool~~
+  + ~~pixel related:~~
+    - ~~activate pixel editing tool~~
+    - ~~draw a pixel at cursor~~
+    - ~~erase a pixel at cursor~~
   + line related:
     - activate line tool
     - start a line at cursor, enter line drawing mode
@@ -35,10 +34,10 @@ A web-based keyboard only pixel art editor.
     - activate circle tool
     - start a circle's center at cursor, enter circle drawing mode
     - stop a circle's radius at cursor, exit circle drawing mode
-  + filling related:
-    - activate filling tool
-    - fill the area at cursor
-    - remove the filling for the area at cursor
+  + ~~filling related:~~
+    - ~~activate filling tool~~
+    - ~~fill the area at cursor~~
+    - ~~remove the filling for the area at cursor~~
   + palette related:
     - enter palette selecting mode
     - exit palette selecting mode
@@ -50,13 +49,13 @@ A web-based keyboard only pixel art editor.
     - set a palette with index
     - unset a palette with index
   + color related:
-    - enter color selecting mode
-    - exit color selecting mode
+    - ~~enter color selecting mode~~
+    - ~~exit color selecting mode~~
     - activate next color
     - activate previous color
     - activate first color
     - activate last color
-    - activate index of color
+    - ~~activate index of color~~
     - set color in current palette
     - unset color in current palette
   + layer related:
@@ -76,8 +75,8 @@ A web-based keyboard only pixel art editor.
   + file related:
     - undo
     - redo
-    - save editing
-    - load editing
+    - ~~save editing~~
+    - ~~load editing~~
     - load script
     - export image as png
   + bind hotkey to command in different mode
