@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, useTemplateRef, watchEffect } from "vue";
+import { onMounted, ref, useTemplateRef, watch } from "vue";
 import { useCanvas } from "@/stores/Canvas";
 import { useColor } from "@/stores/Color";
 import { useCommand } from "@/stores/Command";
@@ -58,7 +58,14 @@ onMounted(() => {
   startRendering.value = true;
 });
 
-watchEffect(render);
+watch(() => [
+  startRendering.value,
+  canvas.allLayers,
+  canvas.dirty,
+  tool.cursor,
+  viewport.pan,
+  viewport.zoom,
+], render);
 
 function render() {
   const start = Date.now();
@@ -99,28 +106,28 @@ function renderPixels() {
   }
 
   const [w, h] = canvas.size;
-  const colorList = canvas.colorList;
   const buf32 = new Uint32Array(imgData.data.buffer);
 
-  for (const layer of canvas.allLayers) {
-    const buffer = layer.buffer;
-
+  if (canvas.dirty) {
     for (let x = 0; x < w; x++) {
       for (let y = 0; y < h; y++) {
-        const pixelColorIndex = buffer[x]![y]!;
-
-        const imgDataOffset = y * w + x;
-
-        if (pixelColorIndex >= 0) {
-          const pixelColor = colorList[pixelColorIndex]!;
-          buf32[imgDataOffset] = pixelColor.u32;
+        if (((x >> 2) + (y >> 2)) % 2 === 0) {
+          buf32[y * w + x] = 0xFF808080;
         } else {
-          if (((x >> 2) + (y >> 2)) % 2 === 0) {
-            buf32[imgDataOffset] = 0xFF808080;
-          } else {
-            buf32[imgDataOffset] = 0xFFA1A1A1;
-          }
+          buf32[y * w + x] = 0xFFA1A1A1;
         }
+      }
+    }
+
+    for (const layer of canvas.allLayers) {
+      const buffer = layer.buffer;
+
+      for (let i = 0; i < w * h; i++) {
+        if (buffer[i] === 0) {
+          continue;
+        }
+
+        buf32[i] = buffer[i]!;
       }
     }
   }
@@ -133,6 +140,8 @@ function renderPixels() {
   const bitmap = dataCanvas.transferToImageBitmap();
   ctx.drawImage(bitmap, left, top, width, height);
   bitmap.close();
+
+  canvas.setDirty(false);
 }
 
 function renderGrid() {
@@ -192,11 +201,15 @@ function renderFrame() {
 function renderCursor() {
   const [x, y] = bufferToCanvas([tool.cursor[0], tool.cursor[1]]);
 
-  const pci = canvas.currentLayer!.buffer[tool.cursor[0]]![tool.cursor[1]]!;
-  const pc = canvas.colorList[pci] ?? { r: 0, g: 0, b: 0, hex: "#000000" };
+  const pc = canvas.getPixel(tool.cursor) ?? "#000000";
 
-  const yiq = (
-    (pc.r * 299) + (pc.g * 587) + (pc.b * 114)) / 1000;
+  const hex = pc.replace("#", "");
+
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+
+  const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
 
   ctx.strokeStyle = (yiq >= 128) ? "#000000" : "#ffffff";
   ctx.lineWidth = 1;

@@ -8,7 +8,7 @@ export function buildErasePixelCommand(
     method: (): CommandResult => {
       const cursor = ctx.tool.cursor;
 
-      ctx.canvas.unsetPixel(cursor[0], cursor[1]);
+      ctx.canvas.unsetPixel(cursor);
 
       return {
         successful: true,

@@ -9,7 +9,7 @@ export function buildDrawPixelCommand(
       const cursor = ctx.tool.cursor;
       const color = ctx.color.currentColorInUse;
 
-      ctx.canvas.setPixel(cursor[0], cursor[1], color);
+      ctx.canvas.setPixel(cursor, color);
 
       return {
         successful: true,

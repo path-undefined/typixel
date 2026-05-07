@@ -35,8 +35,8 @@
       </li>
       <li>
         Pixel:
-        <ColorCube :color="pixel?.hex ?? null" />
-        {{ pixel?.hex }}
+        <ColorCube :color="pixel" />
+        {{ pixel }}
       </li>
     </ul>
   </div>
@@ -54,16 +54,7 @@ const canvas = useCanvas();
 const color = useColor();
 const tool = useTool();
 
-const pixel = computed(() => {
-  const colorIndex
-    = canvas.currentLayer?.buffer?.[tool.cursor[0]]?.[tool.cursor[1]] ?? -1;
-
-  if (colorIndex < 0) {
-    return null;
-  }
-
-  return canvas.colorList[colorIndex] ?? null;
-});
+const pixel = computed(() => canvas.getPixel(tool.cursor));
 </script>
 
 <style lang="scss" scoped>

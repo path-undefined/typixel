@@ -8,8 +8,7 @@ export function buildEraseAreaCommand(
     method: (): CommandResult => {
       const cursor = ctx.tool.cursor;
 
-      const colorIndexAtCursor
-        = ctx.canvas.currentLayer!.buffer[cursor[0]]![cursor[1]]!;
+      const colorAtCursor = ctx.canvas.getPixel(cursor);
 
       const area: [number, number][] = [];
       const visited = new Uint8Array(ctx.canvas.size[0] * ctx.canvas.size[1]);
@@ -29,9 +28,9 @@ export function buildEraseAreaCommand(
           continue;
         }
 
-        const colorIndex = ctx.canvas.currentLayer!.buffer[x]![y]!;
+        const colorAtPixel = ctx.canvas.getPixel([x, y]);
 
-        if (colorIndex === colorIndexAtCursor) {
+        if (colorAtPixel === colorAtCursor) {
           area.push([x, y]);
 
           visited[x * ctx.canvas.size[1] + y] = 1;
@@ -44,7 +43,7 @@ export function buildEraseAreaCommand(
       }
 
       area.forEach(([x, y]) => {
-        ctx.canvas.unsetPixel(x, y);
+        ctx.canvas.unsetPixel([x, y]);
       });
 
       return {

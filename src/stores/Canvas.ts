@@ -5,21 +5,13 @@ type CanvasState = {
   allLayers: Layer[]
   currentLayerIndex: number
   size: [number, number]
-  colorList: Color[]
+  dirty: boolean
 };
 
 type Layer = {
   name: string
   visible: boolean
-  buffer: number[][]
-};
-
-type Color = {
-  r: number
-  g: number
-  b: number
-  u32: number
-  hex: string
+  buffer: Uint32Array
 };
 
 export const useCanvas = defineStore("canvas", () => {
@@ -27,34 +19,22 @@ export const useCanvas = defineStore("canvas", () => {
     allLayers: [],
     currentLayerIndex: -1,
     size: [0, 0],
-    colorList: [],
+    dirty: true,
   });
 
   const allLayers = computed(() => state.value.allLayers);
   const currentLayer = computed(() =>
     state.value.allLayers[state.value.currentLayerIndex] ?? null);
   const size = computed(() => state.value.size);
-  const colorList = computed(() => state.value.colorList);
+  const dirty = computed(() => state.value.dirty);
 
-  const colorLookup = computed(() => {
-    const result: Record<string, number> = {};
+  function init(size: [number, number]) {
+    const [w, h] = size;
 
-    colorList.value.forEach((c, i) => {
-      result[c.hex] = i;
-    });
+    const buffer = new Uint32Array(w * h);
 
-    return result;
-  });
-
-  function init(w: number, h: number) {
-    const buffer: number[][] = [];
-    for (let x = 0; x < w; x++) {
-      const col: number[] = [];
-      for (let y = 0; y < h; y++) {
-        col.push(-1);
-      }
-
-      buffer.push(col);
+    for (let i = 0; i < w * h; i++) {
+      buffer[i] = 0;
     }
 
     state.value.allLayers = [{
@@ -63,8 +43,8 @@ export const useCanvas = defineStore("canvas", () => {
       buffer,
     }];
     state.value.currentLayerIndex = 0;
-    state.value.size = [w, h];
-    state.value.colorList = [];
+    state.value.size = size;
+    state.value.dirty = true;
   }
 
   function selectLayer(layerIndex: number) {
@@ -75,17 +55,16 @@ export const useCanvas = defineStore("canvas", () => {
     const layer = state.value.allLayers
       .splice(state.value.currentLayerIndex, 1)[0]!;
     state.value.allLayers.splice(to, 0, layer);
+    state.value.dirty = true;
   }
 
   function insertLayer() {
-    const buffer: number[][] = [];
-    for (let x = 0; x < size.value[0]; x++) {
-      const col: number[] = [];
-      for (let y = 0; y < size.value[1]; y++) {
-        col.push(-1);
-      }
+    const [w, h] = size.value;
 
-      buffer.push(col);
+    const buffer = new Uint32Array(w * h);
+
+    for (let i = 0; i < w * h; i++) {
+      buffer[i] = 0;
     }
 
     const layer: Layer = {
@@ -95,6 +74,7 @@ export const useCanvas = defineStore("canvas", () => {
     };
 
     state.value.allLayers.splice(state.value.currentLayerIndex, 0, layer);
+    state.value.dirty = true;
   }
 
   function removeLayer() {
@@ -103,46 +83,49 @@ export const useCanvas = defineStore("canvas", () => {
     if (state.value.currentLayerIndex >= state.value.allLayers.length) {
       state.value.currentLayerIndex = state.value.allLayers.length - 1;
     }
+
+    state.value.dirty = true;
   }
 
-  function setPixel(x: number, y: number, color: string) {
-    if (
-      !currentLayer.value
-      || currentLayer.value.buffer[x] === undefined
-      || currentLayer.value.buffer[x][y] === undefined) {
-      return;
-    }
+  function setPixel(pos: [number, number], color: string) {
+    const hex = color.replace("#", "");
 
-    let colorIndex = colorLookup.value[color];
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
 
-    if (colorIndex === undefined) {
-      const hex = color.replace("#", "");
+    const u32 = (255 << 24) | (b << 16) | (g << 8) | r;
 
-      const r = parseInt(hex.substring(0, 2), 16);
-      const g = parseInt(hex.substring(2, 4), 16);
-      const b = parseInt(hex.substring(4, 6), 16);
+    currentLayer.value!.buffer[pos[1] * size.value[0] + pos[0]] = u32;
 
-      state.value.colorList.push({
-        r, g, b,
-        u32: (255 << 24) | (b << 16) | (g << 8) | r,
-        hex: color,
-      });
-      colorIndex = colorLookup.value[color]!;
-    }
-
-    currentLayer.value.buffer[x][y] = colorIndex;
+    state.value.dirty = true;
   }
 
-  function unsetPixel(x: number, y: number) {
-    if (
-      !currentLayer.value
-      || currentLayer.value.buffer[x] === undefined
-      || currentLayer.value.buffer[x][y] === undefined
-    ) {
-      return;
+  function getPixel(pos: [number, number]): string | null {
+    const u32 = currentLayer.value!.buffer[pos[1] * size.value[0] + pos[0]]!;
+
+    if (u32 === 0) {
+      return null;
     }
 
-    currentLayer.value.buffer[x][y] = -1;
+    const r = u32 & 0xFF;
+    const g = (u32 >> 8) & 0xFF;
+    const b = (u32 >> 16) & 0xFF;
+
+    function toHex(c: number) {
+      return c.toString(16).padStart(2, "0");
+    }
+
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+  }
+
+  function unsetPixel(pos: [number, number]) {
+    currentLayer.value!.buffer[pos[1] * size.value[0] + pos[0]] = 0;
+    state.value.dirty = true;
+  }
+
+  function setDirty(dirty: boolean) {
+    state.value.dirty = dirty;
   }
 
   return {
@@ -150,13 +133,15 @@ export const useCanvas = defineStore("canvas", () => {
     allLayers,
     currentLayer,
     size,
-    colorList,
+    dirty,
     init,
     selectLayer,
     moveLayerTo,
     insertLayer,
     removeLayer,
     setPixel,
+    getPixel,
     unsetPixel,
+    setDirty,
   };
 });
