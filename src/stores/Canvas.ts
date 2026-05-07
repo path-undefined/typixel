@@ -18,6 +18,7 @@ type Color = {
   r: number
   g: number
   b: number
+  u32: number
   hex: string
 };
 
@@ -121,7 +122,11 @@ export const useCanvas = defineStore("canvas", () => {
       const g = parseInt(hex.substring(2, 4), 16);
       const b = parseInt(hex.substring(4, 6), 16);
 
-      state.value.colorList.push({ r, g, b, hex: color });
+      state.value.colorList.push({
+        r, g, b,
+        u32: (255 << 24) | (b << 16) | (g << 8) | r,
+        hex: color,
+      });
       colorIndex = colorLookup.value[color]!;
     }
 

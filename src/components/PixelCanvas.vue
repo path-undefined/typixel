@@ -98,28 +98,29 @@ function renderPixels() {
     imgData = dataCtx.createImageData(canvas.size[0], canvas.size[1]);
   }
 
-  for (const layer of canvas.allLayers) {
-    for (let x = 0; x < canvas.size[0]; x++) {
-      for (let y = 0; y < canvas.size[1]; y++) {
-        const pixelColorIndex = layer.buffer[x]![y]!;
+  const [w, h] = canvas.size;
+  const colorList = canvas.colorList;
+  const buf32 = new Uint32Array(imgData.data.buffer);
 
-        let pixelColor;
+  for (const layer of canvas.allLayers) {
+    const buffer = layer.buffer;
+
+    for (let x = 0; x < w; x++) {
+      for (let y = 0; y < h; y++) {
+        const pixelColorIndex = buffer[x]![y]!;
+
+        const imgDataOffset = y * w + x;
 
         if (pixelColorIndex >= 0) {
-          pixelColor = canvas.colorList[pixelColorIndex]!;
+          const pixelColor = colorList[pixelColorIndex]!;
+          buf32[imgDataOffset] = pixelColor.u32;
         } else {
-          pixelColor
-            = (Math.floor(x / 2) + Math.floor(y / 2)) % 2 === 0
-              ? { r: 128, g: 128, b: 128, hex: "#808080" }
-              : { r: 161, g: 161, b: 161, hex: "#a1a1a1" };
+          if (((x >> 2) + (y >> 2)) % 2 === 0) {
+            buf32[imgDataOffset] = 0xFF808080;
+          } else {
+            buf32[imgDataOffset] = 0xFFA1A1A1;
+          }
         }
-
-        const imgDataOffset = (y * canvas.size[0] + x) * 4;
-
-        imgData.data[imgDataOffset] = pixelColor.r;
-        imgData.data[imgDataOffset + 1] = pixelColor.g;
-        imgData.data[imgDataOffset + 2] = pixelColor.b;
-        imgData.data[imgDataOffset + 3] = 255;
       }
     }
   }
