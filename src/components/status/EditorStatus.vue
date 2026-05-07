@@ -35,8 +35,8 @@
       </li>
       <li>
         Pixel:
-        <ColorCube :color="pixel" />
-        {{ pixel }}
+        <ColorCube :color="pixel?.hex ?? null" />
+        {{ pixel?.hex }}
       </li>
     </ul>
   </div>

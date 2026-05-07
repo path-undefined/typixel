@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
-export type Tool = "PIXEL" | "FILL" | "CIRCLE" | "RECT" | "LINE";
+export type Tool = "PIXEL" | "AREA" | "CIRCLE" | "RECT" | "LINE";
 export type ToolStatus = "READY" | "STARTED";
 export type InfoStatus = "EDIT" | "TOOL" | "PALETTE" | "COLOR" | "LAYER";
 

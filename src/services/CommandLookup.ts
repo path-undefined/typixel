@@ -8,6 +8,9 @@ import { buildSelectColorCommand } from "./commands/SelectColor";
 import { buildSelectPaletteCommand } from "./commands/SelectPalette";
 import { buildSelectPaletteAndColorCommand } from "./commands/SelectPaletteAndColor";
 import { buildZoomCommand } from "./commands/Zoom";
+import { buildSelectToolCommand } from "./commands/SelectTool";
+import { buildDrawAreaCommand } from "./commands/DrawArea";
+import { buildEraseAreaCommand } from "./commands/EraseArea";
 
 export function buildCommandMethodLookup(
   ctx: CommandContext,
@@ -19,10 +22,13 @@ export function buildCommandMethodLookup(
     buildCreateCommand(ctx),
     buildDrawPixelCommand(ctx),
     buildErasePixelCommand(ctx),
+    buildDrawAreaCommand(ctx),
+    buildEraseAreaCommand(ctx),
     buildMoveCursorCommand(ctx),
     buildSelectPaletteAndColorCommand(ctx),
     buildSelectPaletteCommand(ctx),
     buildSelectColorCommand(ctx),
+    buildSelectToolCommand(ctx),
     buildZoomCommand(ctx),
   ];
 

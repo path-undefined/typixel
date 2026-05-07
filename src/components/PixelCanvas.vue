@@ -26,18 +26,21 @@ const viewport = useViewport();
 const canvasElem = useTemplateRef("canvas");
 
 const startRendering = ref(false);
-const ctx2d = ref<CanvasRenderingContext2D>(
-  null as unknown as CanvasRenderingContext2D,
-);
+
+let ctx: CanvasRenderingContext2D
+  = null as unknown as CanvasRenderingContext2D;
+let dataCanvas
+  = null as unknown as OffscreenCanvas;
+let dataCtx
+  = null as unknown as OffscreenCanvasRenderingContext2D;
+let imgData
+  = null as unknown as ImageData;
 
 onMounted(() => {
   if (!canvasElem.value) {
     return;
   }
 
-  ctx2d.value = canvasElem.value.getContext("2d")!;
-
-  ctx2d.value.imageSmoothingEnabled = false;
   const dpr = window.devicePixelRatio || 1;
   const canvasRect = canvasElem.value.getBoundingClientRect();
 
@@ -47,6 +50,9 @@ onMounted(() => {
   canvasElem.value.width = resX;
   canvasElem.value.height = resY;
 
+  ctx = canvasElem.value.getContext("2d")!;
+  ctx.imageSmoothingEnabled = false;
+
   viewport.setResolution([resX, resY]);
 
   startRendering.value = true;
@@ -55,6 +61,7 @@ onMounted(() => {
 watchEffect(render);
 
 function render() {
+  const start = Date.now();
   if (!startRendering.value) {
     return;
   }
@@ -65,44 +72,66 @@ function render() {
     return;
   }
 
+  renderPixels();
+  renderGrid();
+  renderFrame();
+  renderCursor();
+
+  console.log(Date.now() - start);
+}
+
+function renderBackground() {
+  ctx.fillStyle = "#5f5f5f";
+  ctx.fillRect(
+    0, 0, viewport.resolution[0], viewport.resolution[1],
+  );
+}
+
+function renderPixels() {
+  if (
+    !dataCanvas
+    || dataCanvas.width !== canvas.size[0]
+    || dataCanvas.height !== canvas.size[1]
+  ) {
+    dataCanvas = new OffscreenCanvas(canvas.size[0], canvas.size[1]);
+    dataCtx = dataCanvas.getContext("2d")!;
+    imgData = dataCtx.createImageData(canvas.size[0], canvas.size[1]);
+  }
+
   for (const layer of canvas.allLayers) {
     for (let x = 0; x < canvas.size[0]; x++) {
       for (let y = 0; y < canvas.size[1]; y++) {
         const pixelColorIndex = layer.buffer[x]![y]!;
 
-        let pixelColor: string;
+        let pixelColor;
 
         if (pixelColorIndex >= 0) {
           pixelColor = canvas.colorList[pixelColorIndex]!;
         } else {
           pixelColor
             = (Math.floor(x / 2) + Math.floor(y / 2)) % 2 === 0
-              ? "#808080"
-              : "#a1a1a1";
+              ? { r: 128, g: 128, b: 128, hex: "#808080" }
+              : { r: 161, g: 161, b: 161, hex: "#a1a1a1" };
         }
 
-        renderPixel(x, y, pixelColor);
+        const imgDataOffset = (y * canvas.size[0] + x) * 4;
+
+        imgData.data[imgDataOffset] = pixelColor.r;
+        imgData.data[imgDataOffset + 1] = pixelColor.g;
+        imgData.data[imgDataOffset + 2] = pixelColor.b;
+        imgData.data[imgDataOffset + 3] = 255;
       }
     }
   }
 
-  renderGrid();
-  renderFrame();
-  renderCursor();
-}
+  const [left, top] = bufferToCanvas([0, 0]);
+  const width = canvas.size[0] * viewport.zoom;
+  const height = canvas.size[1] * viewport.zoom;
 
-function renderBackground() {
-  ctx2d.value.fillStyle = "#5f5f5f";
-  ctx2d.value.fillRect(
-    0, 0, viewport.resolution[0], viewport.resolution[1],
-  );
-}
-
-function renderPixel(x: number, y: number, color: string) {
-  const [left, top] = bufferToCanvas([x, y]);
-
-  ctx2d.value.fillStyle = color;
-  ctx2d.value.fillRect(left, top, viewport.zoom, viewport.zoom);
+  dataCtx.putImageData(imgData, 0, 0);
+  const bitmap = dataCanvas.transferToImageBitmap();
+  ctx.drawImage(bitmap, left, top, width, height);
+  bitmap.close();
 }
 
 function renderGrid() {
@@ -114,25 +143,25 @@ function renderGrid() {
   const width = canvas.size[0] * viewport.zoom;
   const height = canvas.size[1] * viewport.zoom;
 
-  ctx2d.value.strokeStyle = "#c3c3c3";
-  ctx2d.value.lineWidth = 1;
-  ctx2d.value.setLineDash([2, 2]);
+  ctx.strokeStyle = "#c3c3c3";
+  ctx.lineWidth = 1;
+  ctx.setLineDash([2, 2]);
 
   for (let x = 1; x < canvas.size[0]; x++) {
-    ctx2d.value.beginPath();
-    ctx2d.value.moveTo(left + x * viewport.zoom + 0.5, top + 0.5);
-    ctx2d.value.lineTo(left + x * viewport.zoom + 0.5, top + height + 0.5);
-    ctx2d.value.stroke();
+    ctx.beginPath();
+    ctx.moveTo(left + x * viewport.zoom + 0.5, top + 0.5);
+    ctx.lineTo(left + x * viewport.zoom + 0.5, top + height + 0.5);
+    ctx.stroke();
   }
 
   for (let y = 1; y < canvas.size[1]; y++) {
-    ctx2d.value.beginPath();
-    ctx2d.value.moveTo(left + 0.5, top + y * viewport.zoom + 0.5);
-    ctx2d.value.lineTo(left + width + 0.5, top + y * viewport.zoom + 0.5);
-    ctx2d.value.stroke();
+    ctx.beginPath();
+    ctx.moveTo(left + 0.5, top + y * viewport.zoom + 0.5);
+    ctx.lineTo(left + width + 0.5, top + y * viewport.zoom + 0.5);
+    ctx.stroke();
   }
 
-  ctx2d.value.setLineDash([]);
+  ctx.setLineDash([]);
 }
 
 function renderFrame() {
@@ -141,17 +170,17 @@ function renderFrame() {
     [canvas.size[0], canvas.size[1]],
   );
 
-  ctx2d.value.fillStyle = "#333333 ";
-  ctx2d.value.fillRect(
+  ctx.fillStyle = "#333333 ";
+  ctx.fillRect(
     right, top + 4, 4, canvas.size[1] * viewport.zoom,
   );
-  ctx2d.value.fillRect(
+  ctx.fillRect(
     left + 4, bottom, canvas.size[0] * viewport.zoom, 4,
   );
 
-  ctx2d.value.strokeStyle = "#1d1d1d";
-  ctx2d.value.lineWidth = 1;
-  ctx2d.value.strokeRect(
+  ctx.strokeStyle = "#1d1d1d";
+  ctx.lineWidth = 1;
+  ctx.strokeRect(
     left + 0.5,
     top + 0.5,
     canvas.size[0] * viewport.zoom,
@@ -162,26 +191,20 @@ function renderFrame() {
 function renderCursor() {
   const [x, y] = bufferToCanvas([tool.cursor[0], tool.cursor[1]]);
 
-  const pixelColorIndex
-    = canvas.currentLayer!.buffer[tool.cursor[0]]![tool.cursor[1]]!;
-  const pixelColor = canvas.colorList[pixelColorIndex] ?? "#000000";
+  const pci = canvas.currentLayer!.buffer[tool.cursor[0]]![tool.cursor[1]]!;
+  const pc = canvas.colorList[pci] ?? { r: 0, g: 0, b: 0, hex: "#000000" };
 
-  const hexCode = pixelColor.replace("#", "");
+  const yiq = (
+    (pc.r * 299) + (pc.g * 587) + (pc.b * 114)) / 1000;
 
-  const r = parseInt(hexCode.substring(0, 2), 16);
-  const g = parseInt(hexCode.substring(2, 4), 16);
-  const b = parseInt(hexCode.substring(4, 6), 16);
-
-  const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-
-  ctx2d.value.strokeStyle = (yiq >= 128) ? "#000000" : "#ffffff";
-  ctx2d.value.lineWidth = 1;
-  ctx2d.value.strokeRect(
+  ctx.strokeStyle = (yiq >= 128) ? "#000000" : "#ffffff";
+  ctx.lineWidth = 1;
+  ctx.strokeRect(
     x + 0.5, y + 0.5, viewport.zoom, viewport.zoom,
   );
 
-  ctx2d.value.fillStyle = color.currentColorInUse;
-  ctx2d.value.fillRect(
+  ctx.fillStyle = color.currentColorInUse;
+  ctx.fillRect(
     x + Math.floor(viewport.zoom / 10) + 2,
     y + Math.floor(viewport.zoom / 10) + 2,
     viewport.zoom - (Math.floor(viewport.zoom / 10) + 2) * 2 + 1,

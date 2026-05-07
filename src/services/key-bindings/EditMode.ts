@@ -41,4 +41,14 @@ export const defaultKeyBindingsForEditMode: CommandKeyBinding[] = [
     context: { tool: "PIXEL", infoStatus: "EDIT" },
     command: "erase-pixel",
   },
+  {
+    keys: [" "],
+    context: { tool: "AREA", infoStatus: "EDIT" },
+    command: "draw-area",
+  },
+  {
+    keys: ["Backspace"],
+    context: { tool: "AREA", infoStatus: "EDIT" },
+    command: "erase-area",
+  },
 ];

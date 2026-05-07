@@ -16,6 +16,13 @@ export function buildCreateCommand(
         };
       }
 
+      if (width < 0 || width > 200 || height < 0 || height > 200) {
+        return {
+          successful: false,
+          message: "Invalid size",
+        };
+      }
+
       ctx.canvas.init(width, height);
       ctx.color.init();
       ctx.tool.init();

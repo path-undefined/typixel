@@ -5,13 +5,20 @@ type CanvasState = {
   allLayers: Layer[]
   currentLayerIndex: number
   size: [number, number]
-  colorList: string[]
+  colorList: Color[]
 };
 
 type Layer = {
   name: string
   visible: boolean
   buffer: number[][]
+};
+
+type Color = {
+  r: number
+  g: number
+  b: number
+  hex: string
 };
 
 export const useCanvas = defineStore("canvas", () => {
@@ -32,7 +39,7 @@ export const useCanvas = defineStore("canvas", () => {
     const result: Record<string, number> = {};
 
     colorList.value.forEach((c, i) => {
-      result[c] = i;
+      result[c.hex] = i;
     });
 
     return result;
@@ -106,8 +113,15 @@ export const useCanvas = defineStore("canvas", () => {
     }
 
     let colorIndex = colorLookup.value[color];
+
     if (colorIndex === undefined) {
-      state.value.colorList.push(color);
+      const hex = color.replace("#", "");
+
+      const r = parseInt(hex.substring(0, 2), 16);
+      const g = parseInt(hex.substring(2, 4), 16);
+      const b = parseInt(hex.substring(4, 6), 16);
+
+      state.value.colorList.push({ r, g, b, hex: color });
       colorIndex = colorLookup.value[color]!;
     }
 
