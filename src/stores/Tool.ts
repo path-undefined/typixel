@@ -5,7 +5,7 @@ export type Tool = "PIXEL" | "AREA" | "CIRCLE" | "RECT" | "LINE";
 export type ToolStatus = "READY" | "STARTED";
 export type InfoStatus = "EDIT" | "TOOL" | "PALETTE" | "COLOR" | "LAYER";
 
-type ToolState = {
+export type ToolState = {
   cursor: [number, number]
   tool: Tool
   toolStatus: ToolStatus

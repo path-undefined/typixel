@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
-type ColorState = {
+export type ColorState = {
   allPalettes: string[][]
   selectedPaletteIndex: number
   selectedColorIndex: number

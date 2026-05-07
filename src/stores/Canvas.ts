@@ -1,14 +1,14 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
-type CanvasState = {
+export type CanvasState = {
   allLayers: Layer[]
   currentLayerIndex: number
   size: [number, number]
   dirty: boolean
 };
 
-type Layer = {
+export type Layer = {
   name: string
   visible: boolean
   buffer: Uint32Array

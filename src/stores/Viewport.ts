@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
-type ViewportState = {
+export type ViewportState = {
   resolution: [number, number]
   pan: [number, number]
   zoom: number

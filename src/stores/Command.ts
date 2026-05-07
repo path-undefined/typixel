@@ -13,7 +13,7 @@ import { useColor } from "./Color";
 import { useViewport } from "./Viewport";
 import { buildCommandMethodLookup } from "@/services/CommandLookup";
 
-type CommandState = {
+export type CommandState = {
   lastCommandResult: CommandResult | null
   keyBindings: CommandKeyBinding[]
 };
