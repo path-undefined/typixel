@@ -4,57 +4,57 @@ export const defaultKeyBindingsForEditMode: CommandKeyBinding[] = [
   {
     keys: ["ArrowUp"],
     context: { infoStatus: "EDIT" },
-    command: "move-cursor 0 -1",
+    command: "move-cursor 0 -1 delta",
   },
   {
     keys: ["ArrowDown"],
     context: { infoStatus: "EDIT" },
-    command: "move-cursor 0 1",
+    command: "move-cursor 0 1 delta",
   },
   {
     keys: ["ArrowLeft"],
     context: { infoStatus: "EDIT" },
-    command: "move-cursor -1 0",
+    command: "move-cursor -1 0 delta",
   },
   {
     keys: ["ArrowRight"],
     context: { infoStatus: "EDIT" },
-    command: "move-cursor 1 0",
+    command: "move-cursor 1 0 delta",
   },
   {
     keys: ["Control", "ArrowUp"],
     context: { infoStatus: "EDIT" },
-    command: "pan 0 -1",
+    command: "pan 0 -1 delta",
   },
   {
     keys: ["Control", "ArrowDown"],
     context: { infoStatus: "EDIT" },
-    command: "pan 0 1",
+    command: "pan 0 1 delta",
   },
   {
     keys: ["Control", "ArrowLeft"],
     context: { infoStatus: "EDIT" },
-    command: "pan -1 0",
+    command: "pan -1 0 delta",
   },
   {
     keys: ["Control", "ArrowRight"],
     context: { infoStatus: "EDIT" },
-    command: "pan 1 0",
+    command: "pan 1 0 delta",
   },
   {
     keys: ["Control", "="],
     context: { infoStatus: "EDIT" },
-    command: "zoom in",
+    command: "zoom 2 delta",
   },
   {
     keys: ["Control", "-"],
     context: { infoStatus: "EDIT" },
-    command: "zoom out",
+    command: "zoom -2 delta",
   },
   {
     keys: ["Control", "`"],
     context: { infoStatus: "EDIT" },
-    command: "reset-viewport",
+    command: "pan 0 0; zoom 12",
   },
   {
     keys: ["g"],

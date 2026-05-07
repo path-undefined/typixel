@@ -13,7 +13,7 @@
           'tool-select__item--active': t === tool.tool,
         }"
       >
-        {{ (index + 1) % 10 }}.
+        [{{ (index + 1) % 10 }}]
         {{ t }}
       </li>
     </ul>

@@ -17,8 +17,10 @@ export const useColor = defineStore("color", () => {
   });
 
   const allPalettes = computed(() => state.value.allPalettes);
+  const selectedPaletteIndex = computed(() => state.value.selectedPaletteIndex);
   const selectedPalette = computed(() =>
     state.value.allPalettes[state.value.selectedPaletteIndex]!);
+  const selectedColorIndex = computed(() => state.value.selectedColorIndex);
   const selectedColor = computed(() =>
     state.value.allPalettes[
       state.value.selectedPaletteIndex
@@ -73,7 +75,9 @@ export const useColor = defineStore("color", () => {
   return {
     state,
     allPalettes,
+    selectedPaletteIndex,
     selectedPalette,
+    selectedColorIndex,
     selectedColor,
     currentColorInUse,
     init,

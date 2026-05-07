@@ -10,7 +10,7 @@
       <li>
         Layer:
         {{ canvas.currentLayer?.name }}
-        ({{ canvas.currentLayer?.visible ? "visible" : "invisible" }})
+        {{ canvas.currentLayer?.visible ? "" : "[HIDDEN]" }}
       </li>
       <li>
         Tool:

@@ -23,6 +23,7 @@ export const useCanvas = defineStore("canvas", () => {
   });
 
   const allLayers = computed(() => state.value.allLayers);
+  const currentLayerIndex = computed(() => state.value.currentLayerIndex);
   const currentLayer = computed(() =>
     state.value.allLayers[state.value.currentLayerIndex] ?? null);
   const size = computed(() => state.value.size);
@@ -58,7 +59,7 @@ export const useCanvas = defineStore("canvas", () => {
     state.value.dirty = true;
   }
 
-  function insertLayer() {
+  function insertLayer(name: string) {
     const [w, h] = size.value;
 
     const buffer = new Uint32Array(w * h);
@@ -68,12 +69,24 @@ export const useCanvas = defineStore("canvas", () => {
     }
 
     const layer: Layer = {
-      name: "New Layer",
+      name,
       visible: true,
       buffer,
     };
 
-    state.value.allLayers.splice(state.value.currentLayerIndex, 0, layer);
+    state.value.allLayers.splice(state.value.currentLayerIndex + 1, 0, layer);
+    state.value.currentLayerIndex = state.value.currentLayerIndex + 1;
+    state.value.dirty = true;
+  }
+
+  function renameLayer(newName: string) {
+    state.value.allLayers[state.value.currentLayerIndex]!.name = newName;
+  }
+
+  function toggleLayerVisibility() {
+    state.value.allLayers[state.value.currentLayerIndex]!.visible
+      = !state.value.allLayers[state.value.currentLayerIndex]!.visible;
+
     state.value.dirty = true;
   }
 
@@ -102,7 +115,13 @@ export const useCanvas = defineStore("canvas", () => {
   }
 
   function getPixel(pos: [number, number]): string | null {
-    const u32 = currentLayer.value!.buffer[pos[1] * size.value[0] + pos[0]]!;
+    const layer = [...state.value.allLayers].reverse()
+      .find((l) =>
+        l.visible
+        && l.buffer[pos[1] * size.value[0] + pos[0]] !== 0)
+      ?? null;
+
+    const u32 = layer?.buffer[pos[1] * size.value[0] + pos[0]] ?? 0;
 
     if (u32 === 0) {
       return null;
@@ -131,6 +150,7 @@ export const useCanvas = defineStore("canvas", () => {
   return {
     state,
     allLayers,
+    currentLayerIndex,
     currentLayer,
     size,
     dirty,
@@ -138,6 +158,8 @@ export const useCanvas = defineStore("canvas", () => {
     selectLayer,
     moveLayerTo,
     insertLayer,
+    renameLayer,
+    toggleLayerVisibility,
     removeLayer,
     setPixel,
     getPixel,

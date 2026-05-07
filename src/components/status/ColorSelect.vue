@@ -13,7 +13,7 @@
           'color-select__item--active': c === color.currentColorInUse,
         }"
       >
-        {{ (index + 1) % 10 }}.
+        [{{ (index + 1) % 10 }}]
         <ColorCube :color="c" />
         {{ c }}
       </li>

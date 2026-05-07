@@ -6,13 +6,18 @@ export function buildSelectColorCommand(
   return {
     command: "select-color",
     method: (params: string[]): CommandResult => {
-      const colorIndex = Number(params[0]);
+      let colorIndex = Number(params[0]);
+      const delta = params[1];
 
-      if (colorIndex < 0 || colorIndex >= 10) {
-        return {
-          successful: false,
-          message: "Column index out of range",
-        };
+      if (delta === "delta") {
+        colorIndex += ctx.color.selectedColorIndex;
+      }
+
+      if (colorIndex < 0) {
+        colorIndex = 0;
+      }
+      if (colorIndex >= 10) {
+        colorIndex = 9;
       }
 
       ctx.color.selectColor(colorIndex);

@@ -62,6 +62,7 @@ watch(() => [
   startRendering.value,
   canvas.allLayers,
   canvas.dirty,
+  color.currentColorInUse,
   tool.cursor,
   tool.showGrid,
   viewport.pan,
@@ -121,6 +122,10 @@ function renderPixels() {
     }
 
     for (const layer of canvas.allLayers) {
+      if (!layer.visible) {
+        continue;
+      }
+
       const buffer = layer.buffer;
 
       for (let i = 0; i < w * h; i++) {

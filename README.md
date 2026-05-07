@@ -10,13 +10,9 @@ A web-based keyboard only pixel art editor.
     - ~~toggle the grid in canvas display~~
     - ~~pan canvas display~~
     - ~~zoom canvas display~~
-  + tool selecting related:
+  + ~~tool selecting related~~:
     - ~~enter tool selecting mode~~
     - ~~exit tool selecting mode~~
-    - activate next tool
-    - activate previous tool
-    - activate first tool
-    - activate last tool
     - ~~activate index of tool~~
   + ~~pixel related:~~
     - ~~activate pixel editing tool~~
@@ -41,32 +37,18 @@ A web-based keyboard only pixel art editor.
   + palette related:
     - enter palette selecting mode
     - exit palette selecting mode
-    - activate next palette
-    - activate previous palette
-    - activate first palette
-    - activate last palette
     - activate index of palette
-    - set a palette with index
-    - unset a palette with index
-  + color related:
+  + ~~color related:~~
     - ~~enter color selecting mode~~
     - ~~exit color selecting mode~~
-    - activate next color
-    - activate previous color
-    - activate first color
-    - activate last color
     - ~~activate index of color~~
-    - set color in current palette
-    - unset color in current palette
   + layer related:
-    - enter layer editing mode
-    - exit layer editing mode
-    - activate next layer
-    - activate previous layer
-    - activate first layer
-    - activate last layer
-    - activate index of layer
-    - toggle visibility of active layer
+    - ~~enter layer editing mode~~
+    - ~~exit layer editing mode~~
+    - ~~activate next layer~~
+    - ~~activate previous layer~~
+    - ~~activate index of layer~~
+    - ~~toggle visibility of active layer~~
     - move active layer up
     - move active layer down
     - move active layer to top
@@ -77,6 +59,5 @@ A web-based keyboard only pixel art editor.
     - redo
     - ~~save editing~~
     - ~~load editing~~
-    - load script
+    - load palette from JSON
     - export image as png
-  + bind hotkey to command in different mode

@@ -12,6 +12,16 @@ export const defaultKeyBindingsForColorSelectMode: CommandKeyBinding[] = [
     command: "change-info-status EDIT",
   },
   {
+    keys: ["ArrowUp"],
+    context: { infoStatus: "COLOR" },
+    command: "select-color -1 delta",
+  },
+  {
+    keys: ["ArrowDown"],
+    context: { infoStatus: "COLOR" },
+    command: "select-color 1 delta",
+  },
+  {
     keys: ["1"],
     context: { infoStatus: "COLOR" },
     command: "select-color 0",

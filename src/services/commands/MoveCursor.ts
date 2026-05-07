@@ -6,13 +6,16 @@ export function buildMoveCursorCommand(
   return {
     command: "move-cursor",
     method: (params: string[]): CommandResult => {
-      const deltaX = Number(params[0]);
-      const deltaY = Number(params[1]);
+      let x = Number(params[0]);
+      let y = Number(params[1]);
+      const delta = params[2];
 
       const [currX, currY] = ctx.tool.cursor;
 
-      let x = currX + deltaX;
-      let y = currY + deltaY;
+      if (delta === "delta") {
+        x += currX;
+        y += currY;
+      }
 
       const [w, h] = ctx.canvas.size;
 

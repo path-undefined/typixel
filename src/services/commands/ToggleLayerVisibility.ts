@@ -1,13 +1,12 @@
 import type { CommandContext, CommandDefinition, CommandResult } from "../Command.type";
 
-export function buildResetViewportCommand(
+export function buildToggleLayerVisibilityCommand(
   ctx: CommandContext,
 ): CommandDefinition {
   return {
-    command: "reset-viewport",
+    command: "toggle-layer-visibility",
     method: (): CommandResult => {
-      ctx.viewport.setPan([0, 0]);
-      ctx.viewport.setZoom(12);
+      ctx.canvas.toggleLayerVisibility();
 
       return {
         successful: true,

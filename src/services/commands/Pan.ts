@@ -6,12 +6,16 @@ export function buildPanCommand(
   return {
     command: "pan",
     method: (params: string[]): CommandResult => {
-      const deltaX = Number(params[0]);
-      const deltaY = Number(params[1]);
+      let x = Number(params[0]);
+      let y = Number(params[1]);
+      const delta = params[2];
 
       const [offsetX, offsetY] = ctx.viewport.pan;
-      let x = offsetX + deltaX;
-      let y = offsetY + deltaY;
+
+      if (delta === "delta") {
+        x += offsetX;
+        y += offsetY;
+      }
 
       const [w, h] = ctx.canvas.size;
 
@@ -27,8 +31,6 @@ export function buildPanCommand(
       if (y > h / 2) {
         y = Math.floor(h / 2);
       }
-
-      console.log([x, y]);
 
       ctx.viewport.setPan([x, y]);
 

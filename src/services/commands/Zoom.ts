@@ -6,27 +6,23 @@ export function buildZoomCommand(
   return {
     command: "zoom",
     method: (params: string[]): CommandResult => {
-      const direction = params[0];
+      let zoom = Number(params[0]);
+      const delta = params[1];
 
-      const current = ctx.viewport.zoom;
+      const currentZoom = ctx.viewport.zoom;
 
-      switch (direction) {
-        case "in":
-          ctx.viewport.setZoom(
-            Math.min(30, current + 1),
-          );
-          break;
-        case "out":
-          ctx.viewport.setZoom(
-            Math.max(4, current - 1),
-          );
-          break;
-        default:
-          return {
-            successful: false,
-            message: "Unknown moving direction",
-          };
+      if (delta === "delta") {
+        zoom += currentZoom;
       }
+
+      if (zoom < 4) {
+        zoom = 4;
+      }
+      if (zoom > 30) {
+        zoom = 30;
+      }
+
+      ctx.viewport.setZoom(zoom);
 
       return {
         successful: true,

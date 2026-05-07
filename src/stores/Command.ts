@@ -64,20 +64,43 @@ export const useCommand = defineStore("command", () => {
   }
 
   function executeCommandInternally(command: string): CommandResult {
-    const [verb, ...params] = command.split(" ");
+    const units = command.split(";");
 
-    const commandMethod = commandMethodLookup[
-      verb as keyof typeof commandMethodLookup
-    ];
+    for (const unit of units) {
+      const regex = /[^\s"]+|"([^"]*)"/gi;
+      const parts = [];
 
-    if (!commandMethod) {
-      return {
-        successful: false,
-        message: "Command not found",
-      };
+      const it = unit.matchAll(regex);
+
+      let match;
+
+      while ((match = it.next().value)) {
+        parts.push(match[1] || match[0]);
+      }
+
+      const [verb, ...params] = parts;
+
+      const commandMethod = commandMethodLookup[
+        verb as keyof typeof commandMethodLookup
+      ];
+
+      if (!commandMethod) {
+        return {
+          successful: false,
+          message: "Command not found",
+        };
+      }
+
+      const result = commandMethod(params);
+
+      if (!result.successful) {
+        return result;
+      }
     }
 
-    return commandMethod(params);
+    return {
+      successful: true,
+    };
   }
 
   function setKeyBinding(binding: CommandKeyBinding) {

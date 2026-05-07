@@ -15,7 +15,10 @@ import { buildSaveCommand } from "./commands/Save";
 import { buildLoadCommand } from "./commands/Load";
 import { buildToggleGridCommand } from "./commands/ToggleGrid";
 import { buildPanCommand } from "./commands/Pan";
-import { buildResetViewportCommand } from "./commands/ResetViewport";
+import { buildRenameLayerCommand } from "./commands/RenameLayer";
+import { buildNewLayerCommand } from "./commands/NewLayer";
+import { buildSelectLayerCommand } from "./commands/SelectLayer";
+import { buildToggleLayerVisibilityCommand } from "./commands/ToggleLayerVisibility";
 
 export function buildCommandMethodLookup(
   ctx: CommandContext,
@@ -30,6 +33,10 @@ export function buildCommandMethodLookup(
     buildDrawAreaCommand(ctx),
     buildEraseAreaCommand(ctx),
     buildMoveCursorCommand(ctx),
+    buildNewLayerCommand(ctx),
+    buildRenameLayerCommand(ctx),
+    buildToggleLayerVisibilityCommand(ctx),
+    buildSelectLayerCommand(ctx),
     buildSaveCommand(ctx),
     buildLoadCommand(ctx),
     buildSelectPaletteAndColorCommand(ctx),
@@ -39,7 +46,6 @@ export function buildCommandMethodLookup(
     buildToggleGridCommand(ctx),
     buildPanCommand(ctx),
     buildZoomCommand(ctx),
-    buildResetViewportCommand(ctx),
   ];
 
   commandDefinitions.forEach((d) => {
