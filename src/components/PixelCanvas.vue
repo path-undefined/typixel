@@ -254,8 +254,6 @@ function bufferToCanvas(coord: [number, number]): [number, number] {
 }
 
 function onKeyDown(ev: KeyboardEvent) {
-  console.log(ev.key);
-
   const modifiers = [];
 
   if (ev.altKey) {
