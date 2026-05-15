@@ -17,6 +17,11 @@ export const defaultKeyBindingsForLayerSelectMode: CommandKeyBinding[] = [
     command: "toggle-layer-visibility",
   },
   {
+    keys: ["m"],
+    context: { infoStatus: "LAYER" },
+    command: "merge-down-layer",
+  },
+  {
     keys: ["x"],
     context: { infoStatus: "LAYER" },
     command: "remove-layer",

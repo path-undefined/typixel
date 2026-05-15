@@ -21,6 +21,7 @@ import { buildSelectLayerCommand } from "./commands/SelectLayer";
 import { buildToggleLayerVisibilityCommand } from "./commands/ToggleLayerVisibility";
 import { buildMoveLayerCommand } from "./commands/MoveLayer";
 import { buildRemoveLayerCommand } from "./commands/RemoveLayer";
+import { buildMergeDownLayerCommand } from "./commands/MergeDownLayer";
 
 export function buildCommandMethodLookup(
   ctx: CommandContext,
@@ -39,6 +40,7 @@ export function buildCommandMethodLookup(
     buildRenameLayerCommand(ctx),
     buildToggleLayerVisibilityCommand(ctx),
     buildMoveLayerCommand(ctx),
+    buildMergeDownLayerCommand(ctx),
     buildRemoveLayerCommand(ctx),
     buildSelectLayerCommand(ctx),
     buildSaveCommand(ctx),
