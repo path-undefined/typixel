@@ -16,10 +16,11 @@ import { buildLoadCommand } from "./commands/Load";
 import { buildToggleGridCommand } from "./commands/ToggleGrid";
 import { buildPanCommand } from "./commands/Pan";
 import { buildRenameLayerCommand } from "./commands/RenameLayer";
-import { buildNewLayerCommand } from "./commands/NewLayer";
+import { buildCreateLayerCommand } from "./commands/CreateLayer";
 import { buildSelectLayerCommand } from "./commands/SelectLayer";
 import { buildToggleLayerVisibilityCommand } from "./commands/ToggleLayerVisibility";
 import { buildMoveLayerCommand } from "./commands/MoveLayer";
+import { buildRemoveLayerCommand } from "./commands/RemoveLayer";
 
 export function buildCommandMethodLookup(
   ctx: CommandContext,
@@ -34,10 +35,11 @@ export function buildCommandMethodLookup(
     buildDrawAreaCommand(ctx),
     buildEraseAreaCommand(ctx),
     buildMoveCursorCommand(ctx),
-    buildNewLayerCommand(ctx),
+    buildCreateLayerCommand(ctx),
     buildRenameLayerCommand(ctx),
     buildToggleLayerVisibilityCommand(ctx),
     buildMoveLayerCommand(ctx),
+    buildRemoveLayerCommand(ctx),
     buildSelectLayerCommand(ctx),
     buildSaveCommand(ctx),
     buildLoadCommand(ctx),

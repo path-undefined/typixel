@@ -1,10 +1,10 @@
 import type { CommandContext, CommandDefinition, CommandResult } from "../Command.type";
 
-export function buildNewLayerCommand(
+export function buildCreateLayerCommand(
   ctx: CommandContext,
 ): CommandDefinition {
   return {
-    command: "new-layer",
+    command: "create-layer",
     method: (params: string[]): CommandResult => {
       const name = params[0] || "Untitled Layer";
 

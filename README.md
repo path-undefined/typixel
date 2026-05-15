@@ -51,8 +51,8 @@ A web-based keyboard only pixel art editor.
     - ~~toggle visibility of active layer~~
     - ~~move active layer up~~
     - ~~move active layer down~~
-    - merge down active layer
-    - remove layer
+    - ~~merge down active layer~~
+    - ~~remove layer~~
   + file related:
     - undo
     - redo

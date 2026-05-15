@@ -17,6 +17,11 @@ export const defaultKeyBindingsForLayerSelectMode: CommandKeyBinding[] = [
     command: "toggle-layer-visibility",
   },
   {
+    keys: ["x"],
+    context: { infoStatus: "LAYER" },
+    command: "remove-layer",
+  },
+  {
     keys: ["ArrowUp"],
     context: { infoStatus: "LAYER" },
     command: "select-layer 1 delta",
