@@ -42,7 +42,7 @@ A web-based keyboard only pixel art editor.
     - ~~enter color selecting mode~~
     - ~~exit color selecting mode~~
     - ~~activate index of color~~
-  + layer related:
+  + ~~layer related:~~
     - ~~enter layer editing mode~~
     - ~~exit layer editing mode~~
     - ~~activate next layer~~
