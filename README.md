@@ -35,9 +35,10 @@ A web-based keyboard only pixel art editor.
     - ~~fill the area at cursor~~
     - ~~remove the filling for the area at cursor~~
   + palette related:
-    - enter palette selecting mode
-    - exit palette selecting mode
+    - ~~enter palette selecting mode~~
+    - ~~exit palette selecting mode~~
     - activate index of palette
+    - load palette from JSON
   + ~~color related:~~
     - ~~enter color selecting mode~~
     - ~~exit color selecting mode~~
@@ -58,5 +59,4 @@ A web-based keyboard only pixel art editor.
     - redo
     - ~~save editing~~
     - ~~load editing~~
-    - load palette from JSON
     - export image as png
