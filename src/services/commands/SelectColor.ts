@@ -22,6 +22,8 @@ export function buildSelectColorCommand(
 
       ctx.color.selectColor(colorIndex);
 
+      ctx.tool.setInfoStatus("EDIT");
+
       return {
         successful: true,
       };

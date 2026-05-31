@@ -22,6 +22,8 @@ export function buildSelectLayerCommand(
 
       ctx.canvas.selectLayer(layerIndex);
 
+      ctx.tool.setInfoStatus("EDIT");
+
       return {
         successful: true,
       };

@@ -37,7 +37,7 @@ A web-based keyboard only pixel art editor.
   + palette related:
     - ~~enter palette selecting mode~~
     - ~~exit palette selecting mode~~
-    - activate index of palette
+    - ~~activate index of palette~~
     - load palette from JSON
   + ~~color related:~~
     - ~~enter color selecting mode~~

@@ -17,6 +17,8 @@ export function buildSelectPaletteCommand(
 
       ctx.color.selectPalette(paletteIndex);
 
+      ctx.tool.setInfoStatus("EDIT");
+
       return {
         successful: true,
       };

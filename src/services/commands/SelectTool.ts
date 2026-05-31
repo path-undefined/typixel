@@ -18,6 +18,8 @@ export function buildSelectToolCommand(
 
       ctx.tool.setTool(tool as Tool);
 
+      ctx.tool.setInfoStatus("EDIT");
+
       return {
         successful: true,
       };
