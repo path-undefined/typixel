@@ -1,3 +1,4 @@
+import { hexToU32, u32ToHex } from "@/services/ConvertColor";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
@@ -101,14 +102,7 @@ export const useCanvas = defineStore("canvas", () => {
   }
 
   function setPixel(pos: [number, number], color: string) {
-    const hex = color.replace("#", "");
-
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
-
-    const u32 = (255 << 24) | (b << 16) | (g << 8) | r;
-
+    const u32 = hexToU32(color);
     currentLayer.value!.buffer[pos[1] * size.value[0] + pos[0]] = u32;
 
     state.value.dirty = true;
@@ -132,19 +126,7 @@ export const useCanvas = defineStore("canvas", () => {
 
     const u32 = layer?.buffer[pos[1] * size.value[0] + pos[0]] ?? 0;
 
-    if (u32 === 0) {
-      return null;
-    }
-
-    const r = u32 & 0xFF;
-    const g = (u32 >> 8) & 0xFF;
-    const b = (u32 >> 16) & 0xFF;
-
-    function toHex(c: number) {
-      return c.toString(16).padStart(2, "0");
-    }
-
-    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+    return u32ToHex(u32);
   }
 
   function unsetPixel(pos: [number, number]) {
