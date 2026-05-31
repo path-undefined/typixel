@@ -1,5 +1,5 @@
 import type { CommandContext, CommandDefinition, CommandResult } from "../Command.type";
-import { hexToU32, u32ToHex } from "../ConvertColor";
+import { hexToU32 } from "../ConvertColor";
 
 export function buildDrawAreaCommand(
   ctx: CommandContext,
