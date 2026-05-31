@@ -34,11 +34,11 @@ A web-based keyboard only pixel art editor.
     - ~~activate filling tool~~
     - ~~fill the area at cursor~~
     - ~~remove the filling for the area at cursor~~
-  + palette related:
+  + ~~palette related:~~
     - ~~enter palette selecting mode~~
     - ~~exit palette selecting mode~~
     - ~~activate index of palette~~
-    - load palette from JSON
+    - ~~load palettes from JSON~~
   + ~~color related:~~
     - ~~enter color selecting mode~~
     - ~~exit color selecting mode~~
