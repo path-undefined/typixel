@@ -24,9 +24,6 @@ export function buildDrawAreaCommand(
       const buffer = ctx.canvas.currentLayer!.buffer;
       const [w, h] = ctx.canvas.size;
 
-      console.log(buffer[cursor[1] * w + cursor[0]], colorAtCursorU32);
-      console.log(buffer[cursor[1] * w + cursor[0]], colorAtCursorU32);
-
       buffer[cursor[1] * w + cursor[0]] = colorU32;
       const stack: [number, number][] = [[cursor[0], cursor[1]]];
 

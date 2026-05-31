@@ -70,7 +70,6 @@ watch(() => [
 ], render);
 
 function render() {
-  const start = Date.now();
   if (!startRendering.value) {
     return;
   }
@@ -85,8 +84,6 @@ function render() {
   renderGrid();
   renderFrame();
   renderCursor();
-
-  console.log(Date.now() - start);
 }
 
 function renderBackground() {
