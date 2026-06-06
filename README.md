@@ -2,22 +2,16 @@
 
 A web-based keyboard only pixel art editor.
 
+## TODOs
+
+* Implement PNG exporting mechanism
+* Design and implement the redo / undo mechanism
+* Redesign the UI of the whole app (or improve)
+* Implement the layer overlay to be prepared for line / rect / circle drawings
+
 ## Scope of the MVP
 
 * Implement commands:
-  + ~~display related:~~
-    - ~~move cursor for 1 step (4 directions)~~
-    - ~~toggle the grid in canvas display~~
-    - ~~pan canvas display~~
-    - ~~zoom canvas display~~
-  + ~~tool selecting related~~:
-    - ~~enter tool selecting mode~~
-    - ~~exit tool selecting mode~~
-    - ~~activate index of tool~~
-  + ~~pixel related:~~
-    - ~~activate pixel editing tool~~
-    - ~~draw a pixel at cursor~~
-    - ~~erase a pixel at cursor~~
   + line related:
     - activate line tool
     - start a line at cursor, enter line drawing mode
@@ -30,33 +24,7 @@ A web-based keyboard only pixel art editor.
     - activate circle tool
     - start a circle's center at cursor, enter circle drawing mode
     - stop a circle's radius at cursor, exit circle drawing mode
-  + ~~filling related:~~
-    - ~~activate filling tool~~
-    - ~~fill the area at cursor~~
-    - ~~remove the filling for the area at cursor~~
-  + ~~palette related:~~
-    - ~~enter palette selecting mode~~
-    - ~~exit palette selecting mode~~
-    - ~~activate index of palette~~
-    - ~~load palettes from JSON~~
-  + ~~color related:~~
-    - ~~enter color selecting mode~~
-    - ~~exit color selecting mode~~
-    - ~~activate index of color~~
-  + ~~layer related:~~
-    - ~~enter layer editing mode~~
-    - ~~exit layer editing mode~~
-    - ~~activate next layer~~
-    - ~~activate previous layer~~
-    - ~~activate index of layer~~
-    - ~~toggle visibility of active layer~~
-    - ~~move active layer up~~
-    - ~~move active layer down~~
-    - ~~merge down active layer~~
-    - ~~remove layer~~
   + file related:
     - undo
     - redo
-    - ~~save editing~~
-    - ~~load editing~~
-    - export image as png
+    - export image as PNG
