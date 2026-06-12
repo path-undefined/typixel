@@ -1,20 +1,21 @@
 <template>
-  <div class="palette-select">
-    <div class="palette-select__title">
-      Palettes
+  <div class="color-select">
+    <div class="color-select__title">
+      Colors
     </div>
 
-    <ul class="palette-select__list">
+    <ul class="color-select__list">
       <li
-        v-for="(p, index) of color.allPalettes"
-        :key="index"
-        class="palette-select__item"
+        v-for="(c, index) of color.selectedPalette"
+        :key="c"
+        class="color-select__item"
         :class="{
-          'palette-select__item--active': p === color.selectedPalette
+          'color-select__item--active': c === color.currentColorInUse,
         }"
       >
         [{{ (index + 1) % 10 }}]
-        <ColorCubeList :colors="p" />
+        <ColorCube :color="c" />
+        {{ c }}
       </li>
     </ul>
   </div>
@@ -22,13 +23,13 @@
 
 <script setup lang="ts">
 import { useColor } from "@/stores/Color";
-import ColorCubeList from "./ColorCubeList.vue";
+import ColorCube from "./ColorCube.vue";
 
 const color = useColor();
 </script>
 
 <style lang="scss" scoped>
-.palette-select {
+.color-select {
   &__title {
     font-size: 120%;
     font-weight: bold;
@@ -40,7 +41,7 @@ const color = useColor();
 
   &__item {
     &--active {
-      color: t.$color-p-3;
+      color: t.$color-p-0;
       font-weight: bolder;
     }
   }

@@ -16,7 +16,7 @@ const { color } = defineProps<ColorCubeProps>();
 <style lang="scss" scoped>
 .color-cube {
   display: inline-block;
-  border: 1px solid t.$color-g2-0;
+  border: 1px solid t.$color-w-0;
   width: 1em;
   height: 1em;
   background-color: v-bind(color);

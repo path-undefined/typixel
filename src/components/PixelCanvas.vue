@@ -1,16 +1,14 @@
 <template>
-  <div class="pixel-canvas">
-    <canvas
-      ref="canvas"
-      tabindex="0"
-      class="pixel-canvas__canvas"
-      @keydown="onKeyDown"
-    />
-  </div>
+  <canvas
+    ref="canvas"
+    tabindex="0"
+    class="pixel-canvas"
+    @keydown="onKeyDown"
+  />
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, useTemplateRef, watch } from "vue";
+import { onMounted, onUnmounted, ref, useTemplateRef, watch } from "vue";
 import { useCanvas } from "@/stores/Canvas";
 import { useColor } from "@/stores/Color";
 import { useCommand } from "@/stores/Command";
@@ -37,9 +35,31 @@ let imgData
   = null as unknown as ImageData;
 
 onMounted(() => {
+  initialize();
+  window.addEventListener("resize", initialize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", initialize);
+});
+
+watch(() => [
+  startRendering.value,
+  canvas.allLayers,
+  canvas.dirty,
+  color.currentColorInUse,
+  tool.cursor,
+  tool.showGrid,
+  viewport.pan,
+  viewport.zoom,
+], render);
+
+function initialize() {
   if (!canvasElem.value) {
     return;
   }
+
+  startRendering.value = false;
 
   const dpr = window.devicePixelRatio || 1;
   const canvasRect = canvasElem.value.getBoundingClientRect();
@@ -56,18 +76,7 @@ onMounted(() => {
   viewport.setResolution([resX, resY]);
 
   startRendering.value = true;
-});
-
-watch(() => [
-  startRendering.value,
-  canvas.allLayers,
-  canvas.dirty,
-  color.currentColorInUse,
-  tool.cursor,
-  tool.showGrid,
-  viewport.pan,
-  viewport.zoom,
-], render);
+}
 
 function render() {
   if (!startRendering.value) {
@@ -87,7 +96,7 @@ function render() {
 }
 
 function renderBackground() {
-  ctx.fillStyle = "#5f5f5f";
+  ctx.fillStyle = "#333333";
   ctx.fillRect(
     0, 0, viewport.resolution[0], viewport.resolution[1],
   );
@@ -187,7 +196,7 @@ function renderFrame() {
     [canvas.size[0], canvas.size[1]],
   );
 
-  ctx.fillStyle = "#333333 ";
+  ctx.fillStyle = "#1d1d1d";
   ctx.fillRect(
     right, top + 4, 4, canvas.size[1] * viewport.zoom,
   );
@@ -277,20 +286,13 @@ function onKeyDown(ev: KeyboardEvent) {
 <style lang="scss" scoped>
 .pixel-canvas {
   border-radius: t.$border-radius;
+  border: 2px solid transparent;
   width: 100%;
   height: 100%;
-  background-color: t.$color-g1-6;
+  outline: none;
 
-  &__canvas {
-    border-radius: t.$border-radius;
-    border: 2px solid transparent;
-    width: 100%;
-    height: 100%;
-    outline: none;
-
-    &:focus {
-      border-color: t.$color-p-3;
-    }
+  &:focus {
+    border-color: t.$color-p-0;
   }
 }
 </style>

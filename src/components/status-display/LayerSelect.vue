@@ -56,14 +56,14 @@ const reversedLayers = computed(() => [...canvas.allLayers].reverse());
 
   &__item {
     &--active {
-      color: t.$color-p-3;
+      color: t.$color-p-0;
       font-weight: bolder;
     }
   }
 
   &__item-index {
     &--inactive {
-      color: t.$color-g1-6;
+      color: t.$color-g-5;
     }
   }
 }

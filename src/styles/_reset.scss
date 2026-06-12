@@ -6,17 +6,29 @@
 
 body {
   font-family: 'Roboto Mono', monospace;
-  font-size: 11px;
+  @include t.typography-text;
 }
 
-img, picture, video, canvas, svg {
+img,
+picture,
+video,
+canvas,
+svg {
   display: block;
 }
 
-input, button, textarea, select {
+input,
+button,
+textarea,
+select {
   font: inherit;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
+}
+
+a {
+  text-decoration: none;
 }

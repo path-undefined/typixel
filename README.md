@@ -6,7 +6,7 @@ A web-based keyboard only pixel art editor.
 
 * Implement PNG exporting mechanism
 * Design and implement the redo / undo mechanism
-* Redesign the UI of the whole app (or improve)
+* ~~Redesign the UI of the whole app (or improve)~~
 * Implement the layer overlay to be prepared for line / rect / circle drawings
 
 ## Scope of the MVP

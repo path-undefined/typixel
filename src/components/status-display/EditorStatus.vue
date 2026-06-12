@@ -60,8 +60,7 @@ const pixel = computed(() => canvas.getPixel(tool.cursor));
 <style lang="scss" scoped>
 .editor-status {
   &__title {
-    font-size: 120%;
-    font-weight: bold;
+    @include t.typography-title;
   }
 
   &__status-list {

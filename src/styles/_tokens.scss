@@ -1,27 +1,30 @@
-$color-g1-0: #1d1d1d;
-$color-g1-1: #282828;
-$color-g1-2: #333333;
-$color-g1-3: #3e3e3e;
-$color-g1-4: #494949;
-$color-g1-5: #545454;
-$color-g1-6: #5f5f5f;
-$color-g1-7: #6a6a6a;
-$color-g1-8: #757575;
-$color-g1-9: #808080;
+$color-g-1: #1d1d1d;
+$color-g-2: #333333;
+$color-g-3: #494949;
+$color-g-4: #5f5f5f;
+$color-g-5: #757575;
 
-$color-g2-0: #e5e5e5;
-$color-g2-1: #c3c3c3;
-$color-g2-2: #a1a1a1;
+$color-w-0: #ffffff;
 
-$color-p-0: #2e6b2e;
-$color-p-1: #428a42;
-$color-p-2: #59a659;
-$color-p-3: #80b380;
-$color-p-4: #a3c2a3;
-$color-p-5: #c4d4c4;
-$color-p-6: #e3e8e3;
+$color-p-0: #7bad9f;
 
-$color-success: #428a42;
-$color-error: #8a4a42;
+$color-success: #479b47;
+$color-error: #b36055;
+
+@function size($unit) {
+  @return 4px * $unit;
+}
 
 $border-radius: 4px;
+
+@mixin typography-title {
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+@mixin typography-text {
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 400;
+}

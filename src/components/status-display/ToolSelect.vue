@@ -47,7 +47,7 @@ const availableTools: Tool[] = [
 
   &__item {
     &--active {
-      color: t.$color-p-3;
+      color: t.$color-p-0;
       font-weight: bolder;
     }
   }
